@@ -8,15 +8,19 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     private static T instance;
     public static T Instance => instance;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         T typeOfClass = GameObject.FindAnyObjectByType<T>();
 
-        if (typeOfClass == null)
+        if (typeOfClass == this || typeOfClass == null)
         {
-            T targetTypeObj = gameObject.GetComponent<T>();
+            Debug.Log($"{typeof(T)} singleton created");
+            T targetTypeObj = GetComponent<T>();
             instance = targetTypeObj;
-            DontDestroyOnLoad(targetTypeObj.gameObject);
+            if(transform.parent == null)
+            {
+                DontDestroyOnLoad(targetTypeObj.gameObject);
+            }
         }
         else
         {

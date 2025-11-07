@@ -9,6 +9,9 @@ public class Bootstrapper
     [RuntimeInitializeOnLoadMethod]
     public static void GameInitializer()
     {
-        SceneManager.LoadScene("BootStrapScene", LoadSceneMode.Additive);
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        SceneManager.LoadScene("BootStrapScene");
+        SceneManager.LoadScene(currentScene.name);
     }
 }
