@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b61f5ba4db68e8a4f9c5df977ec8d3ff
+guid: 4bdd94dc1a0e9a749804eb04e56bb630
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7754820333487483983
-    second: Jubut_0
+      213: 2221696100199670777
+    second: Snail4_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Jubut_0
+      name: Snail4_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 119
-        height: 126
+        width: 36
+        height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b390855ef7516490800000000000000
-      internalID: -7754820333487483983
+      spriteID: 9f3a54305dc05de10800000000000000
+      internalID: 2221696100199670777
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Jubut_0: -7754820333487483983
+      Snail4_0: 2221696100199670777
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

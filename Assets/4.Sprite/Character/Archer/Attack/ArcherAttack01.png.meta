@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6701f6fcce6f3314b804f18c18e5cadb
+guid: 97084b9b3f5c46b44af3d8b617564d06
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7282886668606283007
-    second: Slime_0
+      213: -6669967405067490551
+    second: ArcherAttack01_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Slime_0
+      name: ArcherAttack01_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 207
-        height: 143
+        width: 79
+        height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1036b4a492dfdea90800000000000000
-      internalID: -7282886668606283007
+      spriteID: 90ba48debf38f63a0800000000000000
+      internalID: -6669967405067490551
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Slime_0: -7282886668606283007
+      ArcherAttack01_0: -6669967405067490551
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
