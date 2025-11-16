@@ -1,10 +1,15 @@
+<<<<<<< Updated upstream
 using System;
 using System.Collections;
 using System.Collections.Generic;
+=======
+using JetBrains.Annotations;
+>>>>>>> Stashed changes
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+<<<<<<< Updated upstream
     [SerializeField]
     protected CharacterData characterData;
 
@@ -33,4 +38,8 @@ public class Character : MonoBehaviour
         
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * sign, transform.localScale.y);
     }
+=======
+    protected PlayerCharacterData characterData;
+    public PlayerCharacterData CharacterData => characterData;
+>>>>>>> Stashed changes
 }

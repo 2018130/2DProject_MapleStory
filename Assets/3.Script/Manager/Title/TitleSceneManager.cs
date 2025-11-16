@@ -7,6 +7,6 @@ public class TitleSceneManager : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneChangeManager.Instance.ChangeScene("CharacterSelectScene");
+        SceneChangeManager.Instance.ChangeScene(SceneType.CharacterSelectScene);
     }
 }

@@ -239,7 +239,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 188163400}
         m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
-        m_MethodName: CreateCharacter
+        m_MethodName: ChangeCreateCharacterScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
