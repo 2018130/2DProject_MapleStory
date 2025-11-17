@@ -3,15 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMuchine
+public class StateMuchine :MonoBehaviour
 {
     private Character character;
 
-    private BaseState currnetState = new BaseState();
+    private BaseState currnetState = new IdleState();
+    public BaseState CurrentState => currnetState;
 
-    public StateMuchine(Character character)
+    public void Initialize(Character character)
     {
         this.character = character;
+    }
+
+    private void Update()
+    {
+        if (character == null)
+            return;
+
+        currnetState.OnStateStay(character);
     }
 
     public void ChangeState(BaseState newState)
@@ -21,6 +30,11 @@ public class StateMuchine
             Debug.Log($"Change same state, do not anything");
             return;
         }
-        newState.ActionState(character);
+
+        currnetState.OnStateExit(character);
+
+        currnetState = newState;
+
+        newState.OnStateEnter(character);
     }
 }

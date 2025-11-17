@@ -9,5 +9,5 @@ public class CharacterDataSO : ScriptableObject
     public float ATK;
     public float MaxHP;
     public float MoveSpeed;
-    public float JumpPower;
+    public float JumpForce;
 }

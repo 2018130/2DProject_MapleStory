@@ -10,27 +10,14 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
     public int Priority { get; set; }
 
-    [Header("Physics Setting")]
-    [SerializeField]
-    private float gravityForce = 9.81f;
-    [SerializeField]
-    private LayerMask blockLayerMask;
-    [SerializeField]
-    private float groundCheckRayDistance = 0.3f;
-    [SerializeField]
-    private Transform groundCheckOffset;
-
-    [Header("Physics Move")]
-    [SerializeField]
-    private bool isGrounded = false;
-    [SerializeField]
-    private int maxJumpCount = 1;
-    [SerializeField]
-    private int jumpCount = 0;
-    [SerializeField]
-    private Vector3 moveDir = Vector3.zero;
+   
+    [Header("Physics")]
     [SerializeField]
     private bool downArrowJump = false;
+    [SerializeField]
+    protected int maxJumpCount = 1;
+    [SerializeField]
+    protected int jumpCount = 0;
 
 
     protected override void Awake()
@@ -40,12 +27,11 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     public void OnSceneContextBuilt()
     {
         playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
+        stateMuchine.ChangeState(new WalkState());
     }
 
     protected override void Update()
     {
-        base.Update();
-
         if (!isGrounded)
         {
             moveDir.y -= gravityForce * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime;
@@ -54,6 +40,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         {
             moveDir.y = 0;
         }
+
         // 움직임 관련 로직 정의
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
@@ -63,7 +50,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             }
             else
             {
-                Jump();
+                stateMuchine.ChangeState(new JumpState());
             }
         }
         if (Input.GetKey(KeyCode.RightArrow))
@@ -79,22 +66,14 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             moveDir.x = 0;
         }
 
-        //
-        MoveTo(transform.position + moveDir * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime);
+
         CheckGround();
     }
 
-    private void Jump()
-    {
-        if (jumpCount >= maxJumpCount)
-            return;
-
-        jumpCount++;
-        moveDir.y = playerCharacterData.statusData.JumpForce;
-    }
+    
 
     private int firstTouchDir = 0;
-    private void CheckGround()
+    protected override void CheckGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(groundCheckOffset.position, Vector2.down, groundCheckRayDistance, blockLayerMask);
 
@@ -104,7 +83,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             if (firstTouchDir == 0)
             {
                 float targetToGround = (groundCheckOffset.position + Vector3.down * groundCheckRayDistance).y - hit.transform.position.y;
-                Debug.Log(targetToGround);
+
                 firstTouchDir = targetToGround > 0.2f ? 1 : -1;
             }
 
@@ -112,12 +91,10 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             {
                 isGrounded = true;
                 jumpCount = 0;
-                Debug.Log("hit target up");
             }
             else
             {
                 isGrounded = false;
-                Debug.Log("hit target down");
             }
         }
         //한 발판을 완전히 벗어난 경우
@@ -125,9 +102,17 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         {
             downArrowJump = false;
             firstTouchDir = 0;
-            Debug.Log("dont have target");
             isGrounded = false;
         }
+    }
+
+    public override void Jump()
+    {
+        if (jumpCount >= maxJumpCount)
+            return;
+
+        jumpCount++;
+        moveDir.y = playerCharacterData.statusData.JumpForce;
     }
 
     private void OnDrawGizmos()

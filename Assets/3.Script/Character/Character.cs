@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(StateMuchine))]
 public class Character : MonoBehaviour
 {
     protected SpriteRenderer model;
@@ -10,20 +11,32 @@ public class Character : MonoBehaviour
     protected Vector3 moveDir = Vector3.zero;
 
     protected StateMuchine stateMuchine;
+    public StateMuchine StateMuchine => stateMuchine;
+
+    [Header("Physics Setting")]
+    [SerializeField]
+    protected float gravityForce = 9.81f;
+    [SerializeField]
+    protected LayerMask blockLayerMask;
+    [SerializeField]
+    protected float groundCheckRayDistance = 0.3f;
+    [SerializeField]
+    protected Transform groundCheckOffset;
+
+    [Header("Physics Move")]
+    [SerializeField]
+    protected bool isGrounded = false;
 
     protected virtual void Awake()
     {
         model = transform.GetComponentInChildren<SpriteRenderer>();
-        stateMuchine = new StateMuchine(this);
+        stateMuchine = GetComponent<StateMuchine>();
+        StateMuchine.Initialize(this);
     }
 
     protected virtual void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            stateMuchine.ChangeState(new WalkState());
-            stateMuchine.ChangeState(new WalkState());
-        }
+        CheckGround();
     }
 
     public virtual void MoveTo(Vector3 moveTo)
@@ -37,11 +50,11 @@ public class Character : MonoBehaviour
     protected virtual void Flip(int dir)
     {
         int sign = 1;
-        if(dir != 0)
+        if (dir != 0)
         {
             sign = dir / Mathf.Abs(dir);
         }
-        
+
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * sign, transform.localScale.y);
     }
 
@@ -53,5 +66,25 @@ public class Character : MonoBehaviour
     public virtual void SetMoveDir(Vector3 newMoveDir)
     {
         moveDir = newMoveDir;
+    }
+
+    /// <summary>
+    /// Use must change to state muchine
+    /// </summary>
+    public virtual void Jump() { }
+
+    protected virtual void CheckGround()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(groundCheckOffset.position, Vector2.down, groundCheckRayDistance, blockLayerMask);
+
+        if (hit.collider != null)
+        {
+            isGrounded = true;
+        }
+        //한 발판을 완전히 벗어난 경우
+        else
+        {
+            isGrounded = false;
+        }
     }
 }

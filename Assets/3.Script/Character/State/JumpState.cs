@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkState : BaseState
+public class JumpState : BaseState
 {
     public override void OnStateEnter(Character character)
     {
-
+        character.Jump();
     }
 
     public override void OnStateExit(Character character)

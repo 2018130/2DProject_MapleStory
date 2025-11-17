@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseState
+public abstract class BaseState
 {
-    public virtual void ActionState(Character character)
-    {
+    public abstract void OnStateEnter(Character character);
 
-    }
+    public abstract void OnStateStay(Character character);
+
+    public abstract void OnStateExit(Character character);
 }
