@@ -2,30 +2,27 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TitleCharacter : Character
+public class TitleCharacter : PlayerCharacter
 {
-    private SpriteRenderer characterSpriteRenderer;
-
     [SerializeField]
     private CharacterUIText characterNameImagePrefab;
     private CharacterUIText characterNameImage;
 
-    [SerializeField]
-    private Material outlineMaterial;
-    private Material defaultMaterial;
-
     public Action<TitleCharacter> ChosenTitleCharacter;
 
-    private void Awake()
+    private SpriteOutline spriteOutline;
+
+    protected override void Awake()
     {
-        characterSpriteRenderer = GetComponent<SpriteRenderer>();
-        defaultMaterial = characterSpriteRenderer.material;
+        spriteOutline = GetComponent<SpriteOutline>();
+        SetOutlineSize(false);
     }
+
     public void Initialize(PlayerCharacterData playerCharacterData)
     {
-        if(characterData == null)
+        if(base.playerCharacterData == null)
         {
-            characterData = playerCharacterData;
+            base.playerCharacterData = playerCharacterData;
         }
 
         if (characterNameImage == null)
@@ -33,18 +30,25 @@ public class TitleCharacter : Character
             characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.MainCanvas.transform);
         }
 
-        characterNameImage.SetTextUIToWorldObj(transform.position, characterData.characterName);
+        characterNameImage.SetTextUIToWorldObj(transform.position, base.playerCharacterData.characterName);
     }
 
     private void ChooseCharacter()
     {
-        SetMaterial(outlineMaterial);
+        SetOutlineSize(true);
         ChosenTitleCharacter?.Invoke(this);
     }
 
-    private void SetMaterial(Material material)
+    public void SetOutlineSize(bool choosed)
     {
-        characterSpriteRenderer.material = material;
+        if(choosed)
+        {
+            spriteOutline.outlineSize = 2;
+        }
+        else
+        {
+            spriteOutline.outlineSize = 0;
+        }
     }
 
     private void OnMouseUp()

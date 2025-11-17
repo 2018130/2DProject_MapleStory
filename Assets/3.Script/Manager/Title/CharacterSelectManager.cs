@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
 {
     [Header("Character")]
@@ -16,11 +17,31 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
     [SerializeField]
     private float characterSpawnOffsetY = 0f;
 
+    private TitleCharacter selectedCharacter;
+
+    // ISceneContextBuilt
     public int Priority { get; set; } = 0;
+
+    // temp
+    private void Start()
+    {
+        GameManager.Instance.Initialize();
+    }
+
     public void OnSceneContextBuilt()
     {
+        SetPlayerCharacterDataFromJson();
         SetPlayerCharacterDataFromSceneContext();
         SyncTitleCharacterFromCharacterData();
+    }
+
+    /// <summary>
+    /// json파일로부터 남아있는 데이터를 불러 옴
+    /// </summary>
+    private void SetPlayerCharacterDataFromJson()
+    {
+        PlayerCharacterDataJson playerCharacterDataJson = PersistentDataManager.Instance.LoadFromJson();
+        playerCharacterDatas = playerCharacterDataJson.data;
     }
 
     /// <summary>
@@ -29,22 +50,45 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
     private void SetPlayerCharacterDataFromSceneContext()
     {
         PlayerCharacterData playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
-        Debug.Log("1111");
+
         if(playerCharacterData != null)
         {
-            Debug.Log("2222");
             if (!playerCharacterDatas.Exists(data => data.Key == playerCharacterData.Key))
             {
-                Debug.Log("3333");
                 playerCharacterDatas.Add(playerCharacterData);
+
+                PlayerCharacterDataJson jsonDatas = new PlayerCharacterDataJson();
+                jsonDatas.data = playerCharacterDatas;
+                PersistentDataManager.Instance.SaveToJson(jsonDatas);
+            }
+        }
+    }
+
+    private void SetSelectedCharacter(TitleCharacter selectedCharacter)
+    {
+        this.selectedCharacter = selectedCharacter;
+
+        foreach(var character in characterObjects)
+        {
+            if(selectedCharacter.PlayerCharacterData.Key == character.PlayerCharacterData.Key)
+            {
+                character.SetOutlineSize(true);
+            }
+            else
+            {
+                character.SetOutlineSize(false);
             }
         }
     }
 
     #region using in buttons
-    public void SelectCharacter(TitleCharacter titleCharacter)
+    // 캐릭터를 선택하고 게임씬으로 화면 전환
+    public void SelectCharacter()
     {
-        SceneChangeManager.Instance.ChangeScene(SceneType.GameScene, titleCharacter.CharacterData);
+        if (selectedCharacter == null)
+            return;
+
+        SceneChangeManager.Instance.ChangeScene(SceneType.GameScene, selectedCharacter.PlayerCharacterData);
     }
 
     public void ChangeCreateCharacterScene()
@@ -56,7 +100,7 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
 
     public void DeleteCharacter(TitleCharacter titleCharacter)
     {
-        playerCharacterDatas.Remove(titleCharacter.CharacterData);
+        playerCharacterDatas.Remove(titleCharacter.PlayerCharacterData);
         SyncTitleCharacterFromCharacterData();
     }
 
@@ -75,11 +119,12 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
         {
             TitleCharacter titleCharacter = Instantiate(titleCharacterPrefab, characterSpawnTransform[i]);
             titleCharacter.transform.localPosition += new Vector3(0, characterSpawnOffsetY, 0);
+            titleCharacter.ChosenTitleCharacter -= SetSelectedCharacter;
+            titleCharacter.ChosenTitleCharacter += SetSelectedCharacter;
             titleCharacter.Initialize(playerCharacterDatas[i]);
 
             characterObjects.Add(titleCharacter);
         }
     }
-
     #endregion
 }

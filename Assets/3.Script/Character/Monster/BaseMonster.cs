@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class BaseMonster : Character
 {
+    // 몬스터 고정 데이터 입력
+    [SerializeField]
+    protected CharacterDataSO characterData;
+
     [SerializeField]
     private float minMoveDirTime = 2f;
     [SerializeField]

@@ -1,26 +1,32 @@
-<<<<<<< Updated upstream
 using System;
 using System.Collections;
 using System.Collections.Generic;
-=======
-using JetBrains.Annotations;
->>>>>>> Stashed changes
 using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    [SerializeField]
-    protected CharacterData characterData;
-
     protected SpriteRenderer model;
 
-    private void Awake()
+    protected Vector3 moveDir = Vector3.zero;
+
+    protected StateMuchine stateMuchine;
+
+    protected virtual void Awake()
     {
         model = transform.GetComponentInChildren<SpriteRenderer>();
+        stateMuchine = new StateMuchine(this);
     }
 
-    protected virtual void MoveTo(Vector3 moveTo)
+    protected virtual void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            stateMuchine.ChangeState(new WalkState());
+            stateMuchine.ChangeState(new WalkState());
+        }
+    }
+
+    public virtual void MoveTo(Vector3 moveTo)
     {
         int dir = transform.position.x - moveTo.x > 0 ? 1 : -1;
         Flip(dir);
@@ -38,8 +44,14 @@ public class Character : MonoBehaviour
         
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * sign, transform.localScale.y);
     }
-=======
-    protected PlayerCharacterData characterData;
-    public PlayerCharacterData CharacterData => characterData;
->>>>>>> Stashed changes
+
+    public virtual void MoveForward()
+    {
+        MoveTo(transform.position + moveDir * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime);
+    }
+
+    public virtual void SetMoveDir(Vector3 newMoveDir)
+    {
+        moveDir = newMoveDir;
+    }
 }
