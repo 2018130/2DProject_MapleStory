@@ -55,7 +55,6 @@ public class SignBoard : MonoBehaviour
 
             int sign = diceTransform.localScale.x > 0 ? -1 : 1;
             diceTransform.localScale = new Vector3(sign, 1, 1);
-            Debug.Log(timer);
             yield return new WaitForSeconds(flipInterval);
         }
 

@@ -967,6 +967,7 @@ GameObject:
   - component: {fileID: 1162486999}
   - component: {fileID: 1162487001}
   - component: {fileID: 1162487000}
+  - component: {fileID: 1162487002}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1010,10 +1011,9 @@ MonoBehaviour:
   groundCheckRayDistance: 0.1
   groundCheckOffset: {fileID: 769368773}
   isGrounded: 0
+  downArrowJump: 0
   maxJumpCount: 1
   jumpCount: 0
-  moveDir: {x: 0, y: 0, z: 0}
-  downArrowJump: 0
 --- !u!70 &1162487001
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1051,6 +1051,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.022239089}
   m_Size: {x: 0.5, y: 0.6985376}
   m_Direction: 0
+--- !u!114 &1162487002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162486998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a73f7b74eb2dd408fc384d549b5960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StateMuchine
 --- !u!1001 &1286303084
 PrefabInstance:
   m_ObjectHideFlags: 0

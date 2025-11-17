@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CharacterData", menuName = "Scriptable/Chracter/CharacterData")]
-public class CharacterData : ScriptableObject
+public class CharacterDataSO : ScriptableObject
 {
     public float ATK;
     public float MaxHP;
     public float MoveSpeed;
-    public float JumpPower;
+    public float JumpForce;
 }

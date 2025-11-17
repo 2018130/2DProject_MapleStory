@@ -19,8 +19,10 @@ public class CharacterCreateSceneManager : MonoBehaviour
     public void BackToSelectCharacterScene(bool isCreatedCharacter)
     {
         string name = signBoard.GetNameFieldText();
-        if(name.Length == 0)
+        if(name.Length == 0 || PersistentDataManager.Instance.LoadFromJson().data.Count >= Constants.MaxPlayerCreateCount)
             return;
+
+        
 
         if (!isCreatedCharacter)
         {
