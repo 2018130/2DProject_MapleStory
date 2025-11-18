@@ -28,6 +28,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     public void OnSceneContextBuilt()
     {
         playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
+        combat.Initialize(playerCharacterData.statusData.MaxHP);
         stateMuchine.ChangeState(new JumpState());
     }
 

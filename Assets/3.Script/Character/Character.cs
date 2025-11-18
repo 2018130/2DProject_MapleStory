@@ -7,8 +7,10 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     protected SpriteRenderer model;
+    public SpriteRenderer Model => model;
 
     protected Vector3 moveDir = Vector3.zero;
+    public Vector3 MoveDir => moveDir;
 
     protected StateMuchine stateMuchine;
     public StateMuchine StateMuchine => stateMuchine;
@@ -27,9 +29,18 @@ public class Character : MonoBehaviour
     [SerializeField]
     protected bool isGrounded = false;
 
+    [Header("Combat")]
+    [SerializeField]
+    protected Combat combat;
+    public Combat Combat => combat;
+
     protected virtual void Awake()
     {
+        combat = GetComponent<Combat>();
+        combat.BindDeadAction(Die);
+
         model = transform.GetComponentInChildren<SpriteRenderer>();
+
         stateMuchine = GetComponent<StateMuchine>();
         StateMuchine.Initialize(this);
     }
@@ -42,7 +53,10 @@ public class Character : MonoBehaviour
     public virtual void MoveTo(Vector3 moveTo)
     {
         int dir = transform.position.x - moveTo.x > 0 ? 1 : -1;
-        Flip(dir);
+        if(!Mathf.Approximately(transform.position.x - moveTo.x, 0))
+        {
+            Flip(dir);
+        }
 
         transform.position = moveTo;
     }
@@ -56,6 +70,11 @@ public class Character : MonoBehaviour
         }
 
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * sign, transform.localScale.y);
+    }
+
+    public int GetFrontDirX()
+    {
+        return transform.localScale.x > 0 ? -1 : 1;
     }
 
     public virtual void MoveForward()
@@ -88,5 +107,14 @@ public class Character : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public virtual void Die()
+    {
+        stateMuchine.ChangeState(new DeadState());
+    }
+    public virtual void Dead() 
+    {
+        gameObject.SetActive(false);
     }
 }

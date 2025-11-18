@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: b93f158fa4431e5499c3590c2acb0f9b
+  m_SerializeEntries:
+  - m_GUID: 10f0446ecf0e4104da0962e2a8335d99
+    m_Address: 120101
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ee24f2065aacca4ab23156fa3e3776d
+    m_Address: Assets/4.Sprite/Weapon/Projectile/Arrow/Arrow01.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 734f6c1cb6629ea4181bcd31231f169e
+    m_Address: Assets/4.Sprite/Weapon/Projectile/Arrow/Arrow02.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1156fcb64b64a548ab0204271424db6
+    m_Address: Assets/4.Sprite/Weapon/Projectile/Arrow/Arrow03.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: c524adfcebb5991489bb2e782a427538, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 58962c48bcb45584b8a27117b216043c, type: 2}
+    - {fileID: 11400000, guid: 1dc6caf27632c2c46a866fbfe2b7d542, type: 2}

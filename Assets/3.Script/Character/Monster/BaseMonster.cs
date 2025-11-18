@@ -28,6 +28,6 @@ public class BaseMonster : Character, ISceneContextBuilt
 
     public override void Jump()
     {
-        moveDir.y = characterData.JumpForce;
+        moveDir.y = characterData.statusData.JumpForce;
     }
 }
