@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 294220586}
   - component: {fileID: 294220588}
   - component: {fileID: 294220587}
+  - component: {fileID: 294220589}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -398,6 +399,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &294220589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294220585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dbcbaf5d4d347441882b9e00e61b4b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimNotify
+  key: Attack
+  NotifyAnimEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 391229319}
+        m_TargetAssemblyTypeName: ShootingArrowSkill, Assembly-CSharp
+        m_MethodName: ShootArrow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &316298124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7898694771648165244, guid: 18423e7ea13d49e44abe5d549d964b61, type: 3}

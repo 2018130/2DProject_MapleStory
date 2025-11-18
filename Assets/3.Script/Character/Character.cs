@@ -9,6 +9,8 @@ public class Character : MonoBehaviour
     protected SpriteRenderer model;
     public SpriteRenderer Model => model;
 
+    protected Animator animator;
+
     protected Vector3 moveDir = Vector3.zero;
     public Vector3 MoveDir => moveDir;
 
@@ -40,6 +42,7 @@ public class Character : MonoBehaviour
         combat.BindDeadAction(Die);
 
         model = transform.GetComponentInChildren<SpriteRenderer>();
+        animator = model.GetComponent<Animator>();
 
         stateMuchine = GetComponent<StateMuchine>();
         StateMuchine.Initialize(this);
@@ -116,5 +119,10 @@ public class Character : MonoBehaviour
     public virtual void Dead() 
     {
         gameObject.SetActive(false);
+    }
+
+    public virtual void SetAnimation(string animationKey)
+    {
+        animator.SetTrigger(animationKey);
     }
 }

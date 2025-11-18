@@ -11,16 +11,21 @@ public class ShootingArrowSkill : ActiveSkill
     [SerializeField]
     private Transform arrowSpawnPoint;
 
-    protected override void Start()
+    public override bool StartSkill()
     {
-        base.Start();
-    }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.LeftControl))
+        bool useSkill = base.StartSkill();
+
+        if(useSkill)
         {
-            ShootArrow();
+            Shoot();
         }
+
+        return useSkill;
+    }
+
+    private void Shoot()
+    {
+        ownedWeapon.Owner.SetAnimation("Attack");
     }
 
     public void ShootArrow()
