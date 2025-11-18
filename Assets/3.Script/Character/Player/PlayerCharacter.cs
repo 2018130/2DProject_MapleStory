@@ -18,6 +18,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     protected int maxJumpCount = 1;
     [SerializeField]
     protected int jumpCount = 0;
+    private int firstTouchDir = 0;
 
 
     protected override void Awake()
@@ -27,7 +28,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     public void OnSceneContextBuilt()
     {
         playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
-        stateMuchine.ChangeState(new WalkState());
+        stateMuchine.ChangeState(new JumpState());
     }
 
     protected override void Update()
@@ -35,10 +36,6 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         if (!isGrounded)
         {
             moveDir.y -= gravityForce * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime;
-        }
-        else
-        {
-            moveDir.y = 0;
         }
 
         // 움직임 관련 로직 정의
@@ -48,10 +45,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             {
                 downArrowJump = true;
             }
-            else
-            {
-                stateMuchine.ChangeState(new JumpState());
-            }
+            stateMuchine.ChangeState(new JumpState());
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -66,13 +60,16 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             moveDir.x = 0;
         }
 
+        if(moveDir.x != 0 && stateMuchine.CurrentState.GetType() != new JumpState().GetType())
+        {
+            stateMuchine.ChangeState(new WalkState());
+        }
 
         CheckGround();
     }
 
     
 
-    private int firstTouchDir = 0;
     protected override void CheckGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(groundCheckOffset.position, Vector2.down, groundCheckRayDistance, blockLayerMask);
@@ -89,8 +86,11 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
             if (hit.collider.CompareTag("OutOfMap") || (!downArrowJump && firstTouchDir == 1))
             {
-                isGrounded = true;
-                jumpCount = 0;
+                // 착지 후 판단
+                if(moveDir.y < 0.5f && stateMuchine.CurrentState.GetType() == new JumpState().GetType())
+                {
+                    StateMuchine.ChangeState(new IdleState());
+                }
             }
             else
             {
@@ -111,8 +111,19 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         if (jumpCount >= maxJumpCount)
             return;
 
-        jumpCount++;
-        moveDir.y = playerCharacterData.statusData.JumpForce;
+        if(!downArrowJump)
+        {
+            jumpCount++;
+            moveDir.y = playerCharacterData.statusData.JumpForce;
+        }
+    }
+
+    public override void EndOfJump()
+    {
+        downArrowJump = false;
+        isGrounded = true;
+        jumpCount = 0;
+        moveDir.y = 0;
     }
 
     private void OnDrawGizmos()

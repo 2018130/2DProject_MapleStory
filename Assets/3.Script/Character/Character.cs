@@ -73,6 +73,8 @@ public class Character : MonoBehaviour
     /// </summary>
     public virtual void Jump() { }
 
+    public virtual void EndOfJump() { }
+
     protected virtual void CheckGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(groundCheckOffset.position, Vector2.down, groundCheckRayDistance, blockLayerMask);

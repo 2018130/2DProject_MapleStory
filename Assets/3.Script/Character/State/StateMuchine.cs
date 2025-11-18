@@ -19,7 +19,7 @@ public class StateMuchine :MonoBehaviour
     {
         if (character == null)
             return;
-
+        Debug.Log(CurrentState.GetType());
         currnetState.OnStateStay(character);
     }
 
@@ -27,7 +27,7 @@ public class StateMuchine :MonoBehaviour
     {
         if(newState.GetType() == currnetState.GetType())
         {
-            Debug.Log($"Change same state, do not anything");
+            //Debug.Log($"Change same state, do not anything : {newState.GetType()}");
             return;
         }
 

@@ -12,7 +12,7 @@ public class JumpState : BaseState
 
     public override void OnStateExit(Character character)
     {
-
+        character.EndOfJump();
     }
 
     public override void OnStateStay(Character character)
