@@ -59,6 +59,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
                 {
                     downArrowJump = true;
                 }
+
                 stateMuchine.ChangeState(new JumpState());
             }
 
@@ -134,17 +135,16 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
         if(!downArrowJump)
         {
-            jumpCount++;
             moveDir.y = playerCharacterData.statusData.JumpForce;
+            jumpCount++;
         }
     }
 
     public override void EndOfJump()
     {
+        base.EndOfJump();
         downArrowJump = false;
-        isGrounded = true;
         jumpCount = 0;
-        moveDir.y = 0;
     }
 
     public void AddExp(int expAmount)
@@ -165,10 +165,4 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         OnChangedLV?.Invoke(lv);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-
-        //Gizmos.DrawLine(groundCheckOffset.position, groundCheckOffset.position + Vector3.down * groundCheckRayDistance);
-    }
 }

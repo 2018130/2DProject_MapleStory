@@ -58,6 +58,11 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!isGrounded)
+        {
+            moveDir.y -= gravityForce * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime;
+        }
+
         CheckGround();
     }
 
@@ -103,7 +108,11 @@ public class Character : MonoBehaviour
     /// </summary>
     public virtual void Jump() { }
 
-    public virtual void EndOfJump() { }
+    public virtual void EndOfJump()
+    {
+        isGrounded = true;
+        moveDir.y = 0;
+    }
 
     protected virtual void CheckGround()
     {
@@ -111,7 +120,10 @@ public class Character : MonoBehaviour
 
         if (hit.collider != null)
         {
-            isGrounded = true;
+            if (moveDir.y < 0.5f && stateMuchine.CurrentState.GetType() == new JumpState().GetType())
+            {
+                StateMuchine.ChangeState(new IdleState());
+            }
         }
         //한 발판을 완전히 벗어난 경우
         else
@@ -148,5 +160,11 @@ public class Character : MonoBehaviour
                 animator.SetFloat(animationKey, value);
             }
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawLine(groundCheckOffset.position, groundCheckOffset.position + Vector3.down * groundCheckRayDistance);
     }
 }
