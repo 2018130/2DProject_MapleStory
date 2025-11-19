@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerCharacter : Character, ISceneContextBuilt
 {
+    [SerializeField]
     protected PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
@@ -20,7 +21,6 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     protected int jumpCount = 0;
     private int firstTouchDir = 0;
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -28,8 +28,12 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     public void OnSceneContextBuilt()
     {
         playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
-        combat.Initialize(playerCharacterData.statusData.MaxHP);
-        stateMuchine.ChangeState(new JumpState());
+
+        if(this is not TitleCharacter)
+        {
+            combat.Initialize(playerCharacterData.statusData.MaxHP);
+            stateMuchine.ChangeState(new JumpState());
+        }
     }
 
     protected override void Update()
@@ -40,21 +44,29 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         }
 
         // 움직임 관련 로직 정의
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if(!isStuned)
         {
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
-                downArrowJump = true;
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    downArrowJump = true;
+                }
+                stateMuchine.ChangeState(new JumpState());
             }
-            stateMuchine.ChangeState(new JumpState());
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveDir.x = 1;
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveDir.x = -1;
+
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                moveDir.x = 1;
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveDir.x = -1;
+            }
+            else
+            {
+                moveDir.x = 0;
+            }
         }
         else
         {
@@ -131,6 +143,6 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawLine(groundCheckOffset.position, groundCheckOffset.position + Vector3.down * groundCheckRayDistance);
+        //Gizmos.DrawLine(groundCheckOffset.position, groundCheckOffset.position + Vector3.down * groundCheckRayDistance);
     }
 }

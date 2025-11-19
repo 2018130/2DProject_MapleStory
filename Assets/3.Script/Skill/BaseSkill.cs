@@ -21,13 +21,15 @@ public class BaseSkill : MonoBehaviour
     [SerializeField]
     protected Weapon ownedWeapon;
 
-    // tmp code
     protected virtual void Start()
     {
-        Initialize(GetComponentInParent<Weapon>());
+        if(transform.parent != null)
+        {
+            Initialize(GetComponentInParent<Weapon>());
+        }
     }
 
-    protected virtual void Initialize(Weapon ownedWeapon)
+    public virtual void Initialize(Weapon ownedWeapon)
     {
         this.ownedWeapon = ownedWeapon;
     }

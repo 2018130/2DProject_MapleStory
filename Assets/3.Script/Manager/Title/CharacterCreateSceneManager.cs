@@ -22,7 +22,6 @@ public class CharacterCreateSceneManager : MonoBehaviour
         if(name.Length == 0 || PersistentDataManager.Instance.LoadFromJson().data.Count >= Constants.MaxPlayerCreateCount)
             return;
 
-        
 
         if (!isCreatedCharacter)
         {
@@ -33,6 +32,5 @@ public class CharacterCreateSceneManager : MonoBehaviour
             PlayerCharacterData playerCharacterData = new PlayerCharacterData(name, statusData);
             SceneChangeManager.Instance.ChangeScene(SceneType.CharacterSelectScene, playerCharacterData);
         }
-
     }
 }

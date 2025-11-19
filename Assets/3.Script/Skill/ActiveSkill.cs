@@ -15,6 +15,12 @@ public class ActiveSkill : BaseSkill
     protected float baseRequireMP;
     [SerializeField]
     protected LayerMask skillHitTargetLayer;
+    // 스킬 사용중에 움직일 수 있는지
+    [SerializeField]
+    protected bool canMoveWhileUsingSkill = false;
+    // 점프중에 스킬이 사용가능한지
+    [SerializeField]
+    protected bool canUseSkillWhileJumping = false;
 
     protected SkillController skillController;
 
@@ -27,14 +33,9 @@ public class ActiveSkill : BaseSkill
 
     protected virtual float CalculateDamage() { return -1; }
 
-    public virtual bool StartSkill() 
-    {
-        if (skillController.IsPlayingAnySkill)
-            return false;
+    public virtual void StartSkill() { }
 
-        skillController.IsPlayingAnySkill = true;
-        return true;
-    }
+    // animNotify
     public virtual void EndSkill()
     {
         skillController.IsPlayingAnySkill = false;

@@ -11,23 +11,40 @@ public class ShootingArrowSkill : ActiveSkill
     [SerializeField]
     private Transform arrowSpawnPoint;
 
-    public override bool StartSkill()
-    {
-        bool useSkill = base.StartSkill();
 
-        if(useSkill)
+    public override void StartSkill()
+    {
+        bool canSkill = canUseSkillWhileJumping ||
+            (!canUseSkillWhileJumping && ownedWeapon.Owner.StateMuchine.CurrentState.GetType() != new JumpState().GetType());
+        if (!skillController.IsPlayingAnySkill && canSkill)
         {
+            skillController.IsPlayingAnySkill = true;
+
+
+            if (!canMoveWhileUsingSkill)
+            {
+                ownedWeapon.Owner.IsStuned = true;
+            }
+
             Shoot();
         }
-
-        return useSkill;
     }
 
+    public override void EndSkill()
+    {
+        base.EndSkill();
+
+        if (!canMoveWhileUsingSkill)
+        {
+            ownedWeapon.Owner.IsStuned = false;
+        }
+    }
     private void Shoot()
     {
         ownedWeapon.Owner.SetAnimation("Attack");
     }
 
+    // animNotify
     public void ShootArrow()
     {
         Projectile arrow = Projectile.GetProjectileFromPool(arrowItemCode);
@@ -38,8 +55,8 @@ public class ShootingArrowSkill : ActiveSkill
         offset.y = 0;
 
         Collider2D[] enemies = Physics2D.OverlapBoxAll(arrowSpawnPoint.position + offset, boxSize, 0, skillHitTargetLayer);
-        
-        foreach(var enemy in enemies)
+
+        foreach (var enemy in enemies)
         {
             if (enemy.transform.CompareTag("Enemy"))
             {
@@ -67,7 +84,7 @@ public class ShootingArrowSkill : ActiveSkill
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        if(ownedWeapon != null && ownedWeapon.Owner != null)
+        if (ownedWeapon != null && ownedWeapon.Owner != null)
         {
             int sign = ownedWeapon.Owner.GetFrontDirX();
             Vector3 boxSize = new Vector3(1.5f * 3, ownedWeapon.Owner.Model.bounds.size.y);

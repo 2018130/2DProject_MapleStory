@@ -4,15 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[Serializable]
+public class StringUnityEventPair
+{
+    public string String;
+    public UnityEvent Event;
+}
+
 public class AnimNotify : MonoBehaviour
 {
-    [SerializeField]
-    private string key;
+    public List<StringUnityEventPair> NotifyAnimEvents;
 
-    public UnityEvent NotifyAnimEvent;
-
-    public void Active()
+    public void Active(string key)
     {
-        NotifyAnimEvent?.Invoke();
+        for(int i = 0; i < NotifyAnimEvents.Count; i++)
+        {
+            if(NotifyAnimEvents[i].String == key)
+            {
+                NotifyAnimEvents[i].Event?.Invoke();
+                return;
+            }
+        }
     }
 }

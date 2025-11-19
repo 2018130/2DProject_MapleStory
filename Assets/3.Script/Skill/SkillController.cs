@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
-    private List<ActiveSkill> activeSkills = new List<ActiveSkill>();
-    private List<PassiveSkill> passiveSkills = new List<PassiveSkill>();
+    [SerializeField]
+    private ShootingArrowSkill shootingArrowSkill;
 
     private bool isPlayingAnySkill = false;
     public bool IsPlayingAnySkill
@@ -17,18 +17,14 @@ public class SkillController : MonoBehaviour
 
     private void Awake()
     {
-        for(int i = 0; i < transform.childCount; i++)
-        {
-            Transform children = transform.GetChild(i);
+        shootingArrowSkill = GetComponentInChildren<ShootingArrowSkill>();
+    }
 
-            if(children.TryGetComponent(out ActiveSkill activeSkill))
-            {
-                activeSkills.Add(activeSkill);
-            }
-            else if (children.TryGetComponent(out PassiveSkill passiveSkill))
-            {
-                passiveSkills.Add(passiveSkill);
-            }
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            shootingArrowSkill.StartSkill();
         }
     }
 }

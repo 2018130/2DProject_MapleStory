@@ -31,7 +31,16 @@ public class StatusData
     public float MoveSpeed => moveSpeed;
     public float JumpForce => jumpForce;
 
-    public StatusData() { }
+    public StatusData()
+    {
+        this.atk = 3;
+        this.str = 4;
+        this.dex = 4;
+        this.integer = 4;
+        this.luk = 4;
+        this.moveSpeed = 1f;
+        this.jumpForce = 4.5f;
+    }
 
     public StatusData(int str, int dex, int integer, int luk)
     {

@@ -8,7 +8,7 @@ public class TitleCharacter : PlayerCharacter
     private CharacterUIText characterNameImagePrefab;
     private CharacterUIText characterNameImage;
 
-    public Action<TitleCharacter> ChosenTitleCharacter;
+    public Action<string> ChosenTitleCharacter;
 
     private SpriteOutline spriteOutline;
 
@@ -17,10 +17,14 @@ public class TitleCharacter : PlayerCharacter
         spriteOutline = GetComponent<SpriteOutline>();
         SetOutlineSize(false);
     }
+    protected override void Update()
+    {
+
+    }
 
     public void Initialize(PlayerCharacterData playerCharacterData)
     {
-        if(base.playerCharacterData == null)
+        if(base.playerCharacterData.Key.Length == 0)
         {
             base.playerCharacterData = playerCharacterData;
         }
@@ -36,7 +40,7 @@ public class TitleCharacter : PlayerCharacter
     private void ChooseCharacter()
     {
         SetOutlineSize(true);
-        ChosenTitleCharacter?.Invoke(this);
+        ChosenTitleCharacter?.Invoke(playerCharacterData.Key);
     }
 
     public void SetOutlineSize(bool choosed)
@@ -49,6 +53,12 @@ public class TitleCharacter : PlayerCharacter
         {
             spriteOutline.outlineSize = 0;
         }
+    }
+
+    public void OnDestroy()
+    {
+        if(characterNameImage != null)
+        Destroy(characterNameImage.gameObject);
     }
 
     private void OnMouseUp()

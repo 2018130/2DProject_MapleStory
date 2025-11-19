@@ -108,7 +108,14 @@ AnimationClip:
   m_Events:
   - time: 0.6666667
     functionName: Active
-    data: 
+    data: ShootArrow
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: Active
+    data: EndSkill
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

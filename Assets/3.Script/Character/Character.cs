@@ -36,6 +36,14 @@ public class Character : MonoBehaviour
     protected Combat combat;
     public Combat Combat => combat;
 
+    [Header("State")]
+    protected bool isStuned = false;
+    public bool IsStuned
+    {
+        get => isStuned;
+        set => isStuned = value;
+    }
+
     protected virtual void Awake()
     {
         combat = GetComponent<Combat>();

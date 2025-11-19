@@ -17,6 +17,7 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
     [SerializeField]
     private float characterSpawnOffsetY = 0f;
 
+    [SerializeField]
     private TitleCharacter selectedCharacter;
 
     // ISceneContextBuilt
@@ -41,6 +42,7 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
     private void SetPlayerCharacterDataFromJson()
     {
         PlayerCharacterDataJson playerCharacterDataJson = PersistentDataManager.Instance.LoadFromJson();
+
         playerCharacterDatas = playerCharacterDataJson.data;
     }
 
@@ -51,7 +53,7 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
     {
         PlayerCharacterData playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
 
-        if(playerCharacterData != null)
+        if(playerCharacterData.Key.Length != 0)
         {
             if (!playerCharacterDatas.Exists(data => data.Key == playerCharacterData.Key))
             {
@@ -64,19 +66,17 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
         }
     }
 
-    private void SetSelectedCharacter(TitleCharacter selectedCharacter)
+    private void SetSelectedCharacter(string key)
     {
-        this.selectedCharacter = selectedCharacter;
-
         foreach(var character in characterObjects)
         {
-            if(selectedCharacter.PlayerCharacterData.Key == character.PlayerCharacterData.Key)
+            if(key != character.PlayerCharacterData.Key)
             {
-                character.SetOutlineSize(true);
+                character.SetOutlineSize(false);
             }
             else
             {
-                character.SetOutlineSize(false);
+                selectedCharacter = character;
             }
         }
     }
@@ -98,10 +98,17 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
         SyncTitleCharacterFromCharacterData();
     }
 
-    public void DeleteCharacter(TitleCharacter titleCharacter)
+    public void DeleteCharacter()
     {
-        playerCharacterDatas.Remove(titleCharacter.PlayerCharacterData);
+        if (selectedCharacter == null)
+            return;
+
+        playerCharacterDatas.Remove(selectedCharacter.PlayerCharacterData);
         SyncTitleCharacterFromCharacterData();
+
+        PlayerCharacterDataJson jsonDatas = new PlayerCharacterDataJson();
+        jsonDatas.data = playerCharacterDatas;
+        PersistentDataManager.Instance.SaveToJson(jsonDatas);
     }
 
     #endregion
