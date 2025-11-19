@@ -9,10 +9,16 @@ public class StatusData
     [SerializeField]
     private float jumpForce;
 
+    // »ç¸Á ½Ã È¹µæ °æÇèÄ¡ ·®
+    [SerializeField]
+    private int expAmount;
+
     [SerializeField]
     private int atk;
     [SerializeField]
     private int maxHP;
+    [SerializeField]
+    private int maxMP;
     [SerializeField]
     private int str;
     [SerializeField]
@@ -24,12 +30,18 @@ public class StatusData
 
     public int ATK => atk;
     public int MaxHP => maxHP;
+    public int MaxMP => maxMP;
     public int STR => str;
     public int DEX => dex;
     public int INT => integer;
     public int LUK => luk;
     public float MoveSpeed => moveSpeed;
     public float JumpForce => jumpForce;
+
+    public int GetEXPAmount()
+    {
+        return expAmount;
+    }
 
     public StatusData()
     {
@@ -40,6 +52,7 @@ public class StatusData
         this.luk = 4;
         this.moveSpeed = 1f;
         this.jumpForce = 4.5f;
+        expAmount = 10;
     }
 
     public StatusData(int str, int dex, int integer, int luk)
@@ -51,6 +64,7 @@ public class StatusData
         this.luk = luk;
         this.moveSpeed = 1f;
         this.jumpForce = 4.5f;
+        expAmount = 10;
     }
 
     public void SetRandomStatus()

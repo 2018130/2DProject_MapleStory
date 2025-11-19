@@ -64,7 +64,7 @@ public class Character : MonoBehaviour
     public virtual void MoveTo(Vector3 moveTo)
     {
         int dir = transform.position.x - moveTo.x > 0 ? 1 : -1;
-        if(!Mathf.Approximately(transform.position.x - moveTo.x, 0))
+        if (!Mathf.Approximately(transform.position.x - moveTo.x, 0))
         {
             Flip(dir);
         }
@@ -124,13 +124,29 @@ public class Character : MonoBehaviour
     {
         stateMuchine.ChangeState(new DeadState());
     }
-    public virtual void Dead() 
+    public virtual void Dead()
     {
         gameObject.SetActive(false);
     }
 
     public virtual void SetAnimation(string animationKey)
     {
-        animator.SetTrigger(animationKey);
+        for (int i = 0; i < animator.parameterCount; i++)
+        {
+            if (animator.parameters[i].name == animationKey)
+            {
+                animator.SetTrigger(animationKey);
+            }
+        }
+    }
+    public virtual void SetAnimation(string animationKey, float value)
+    {
+        for (int i = 0; i < animator.parameterCount; i++)
+        {
+            if (animator.parameters[i].name == animationKey)
+            {
+                animator.SetFloat(animationKey, value);
+            }
+        }
     }
 }

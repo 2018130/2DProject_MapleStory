@@ -19,6 +19,8 @@ public class BaseSkill : MonoBehaviour
     [SerializeField]
     protected int lv = 0;
     [SerializeField]
+    protected int requireMPAmount;
+    [SerializeField]
     protected Weapon ownedWeapon;
 
     protected virtual void Start()

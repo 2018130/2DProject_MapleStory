@@ -78,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShootingArrowSkill
   skillType: 1
   lv: 1
+  requireMPAmount: 10
   ownedWeapon: {fileID: 0}
   atkRate: 0
   baseCooltime: 1
@@ -85,6 +86,8 @@ MonoBehaviour:
   skillHitTargetLayer:
     serializedVersion: 2
     m_Bits: 128
+  canMoveWhileUsingSkill: 0
+  canUseSkillWhileJumping: 0
   arrowItemCode: 120101
   arrowSpawnPoint: {fileID: 7195958356023123889}
 --- !u!1 &2533691844878347974

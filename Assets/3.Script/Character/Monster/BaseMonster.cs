@@ -8,6 +8,7 @@ public class BaseMonster : Character, ISceneContextBuilt
     // 몬스터 고정 데이터 입력
     [SerializeField]
     protected CharacterDataSO characterData;
+    public CharacterDataSO CharacterData => characterData;
 
     [SerializeField]
     private float minMoveDirTime = 2f;

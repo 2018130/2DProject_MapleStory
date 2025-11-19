@@ -10,6 +10,10 @@ public class SceneContext : MonoBehaviour
     public float GameDeltaTime => gameDeltaTime;
 
     [SerializeField]
+    private PlayerCharacter playerCharacter;
+    public PlayerCharacter PlayerCharacter => playerCharacter;
+
+    [SerializeField]
     private PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
@@ -22,6 +26,8 @@ public class SceneContext : MonoBehaviour
         {
             playerCharacterData = data;
         }
+
+        playerCharacter = FindAnyObjectByType<PlayerCharacter>();
         mainCanvas = FindAnyObjectByType<Canvas>();
     }
 }

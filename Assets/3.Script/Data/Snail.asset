@@ -15,8 +15,10 @@ MonoBehaviour:
   statusData:
     moveSpeed: 1
     jumpForce: 0
+    expAmount: 10
     atk: 3
     maxHP: 10
+    maxMP: 0
     str: 0
     dex: 0
     integer: 0

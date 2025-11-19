@@ -9,7 +9,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     protected PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
-    public int Priority { get; set; }
+    public int Priority { get; set; } = 1;
 
    
     [Header("Physics")]
@@ -21,19 +21,26 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     protected int jumpCount = 0;
     private int firstTouchDir = 0;
 
+    // event
+    public Action<float, float> OnChangedExp;
+    public Action<int> OnChangedLV;
+
     protected override void Awake()
     {
         base.Awake();
     }
+
     public void OnSceneContextBuilt()
     {
         playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
 
-        if(this is not TitleCharacter)
+        if (this is not TitleCharacter)
         {
-            combat.Initialize(playerCharacterData.statusData.MaxHP);
+            combat.Initialize(playerCharacterData.statusData.MaxHP, playerCharacterData.statusData.MaxMP);
             stateMuchine.ChangeState(new JumpState());
         }
+
+        AddExp(0);
     }
 
     protected override void Update()
@@ -44,7 +51,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         }
 
         // 움직임 관련 로직 정의
-        if(!isStuned)
+        if (!isStuned)
         {
             if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
@@ -79,6 +86,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         }
 
         CheckGround();
+        SetAnimation("Speed", moveDir.magnitude);
     }
 
     
@@ -137,6 +145,24 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         isGrounded = true;
         jumpCount = 0;
         moveDir.y = 0;
+    }
+
+    public void AddExp(int expAmount)
+    {
+        int lv = playerCharacterData.GetLevel();
+
+        playerCharacterData.EXP += expAmount;
+
+        if(playerCharacterData.GetLevel() >= lv)
+        {
+            LevelUp(playerCharacterData.GetLevel());
+        }
+        OnChangedExp?.Invoke(playerCharacterData.GetRemainExp(), playerCharacterData.GetTotalRequiredExpForNextLevel());
+    }
+
+    public void LevelUp(int lv)
+    {
+        OnChangedLV?.Invoke(lv);
     }
 
     private void OnDrawGizmos()

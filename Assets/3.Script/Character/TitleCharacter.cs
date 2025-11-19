@@ -34,7 +34,7 @@ public class TitleCharacter : PlayerCharacter
             characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.MainCanvas.transform);
         }
 
-        characterNameImage.SetTextUIToWorldObj(transform.position, base.playerCharacterData.characterName);
+        characterNameImage.SetTextUIToWorldObj(transform.position, base.playerCharacterData.CharacterName);
     }
 
     private void ChooseCharacter()

@@ -14,6 +14,8 @@ public class ShootingArrowSkill : ActiveSkill
 
     public override void StartSkill()
     {
+        
+
         bool canSkill = canUseSkillWhileJumping ||
             (!canUseSkillWhileJumping && ownedWeapon.Owner.StateMuchine.CurrentState.GetType() != new JumpState().GetType());
         if (!skillController.IsPlayingAnySkill && canSkill)
@@ -24,6 +26,14 @@ public class ShootingArrowSkill : ActiveSkill
             if (!canMoveWhileUsingSkill)
             {
                 ownedWeapon.Owner.IsStuned = true;
+            }
+
+            if (ownedWeapon.Owner.TryGetComponent(out Combat combat))
+            {
+                if (!combat.CheckMP(requireMPAmount))
+                    return;
+
+                combat.AddMP(-requireMPAmount);
             }
 
             Shoot();
@@ -83,6 +93,7 @@ public class ShootingArrowSkill : ActiveSkill
 
     private void OnDrawGizmos()
     {
+        /*
         Gizmos.color = Color.red;
         if (ownedWeapon != null && ownedWeapon.Owner != null)
         {
@@ -92,5 +103,6 @@ public class ShootingArrowSkill : ActiveSkill
             offset.y = 0;
             Gizmos.DrawCube(arrowSpawnPoint.position + offset, boxSize);
         }
+        */
     }
 }
