@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PassiveSkill : BaseSkill
 {
     [SerializeField]
@@ -15,11 +14,19 @@ public class PassiveSkill : BaseSkill
     public StatusType StatusType => statusType;
     public int StatValuePerLV => statValuePerLV;
 
-    public override void UpgradeLv(int amount)
-    {
-        int preLv = lv;
+    [SerializeField]
+    private BaseSkillData passiveSkillData;
 
-        base.UpgradeLv(amount);
+    protected override void Start()
+    {
+        base.Start();
+        baseSkillData = passiveSkillData;
+    }
+    public override void UpgradeLv()
+    {
+        int preLv = baseSkillData.LV;
+
+        base.UpgradeLv();
 
         ChangeSkillStatus(preLv);
     }
@@ -27,7 +34,7 @@ public class PassiveSkill : BaseSkill
     public void ChangeSkillStatus(int preLV)
     {
         StatusData statusData = GameManager.Instance.CurrentSceneContext.PlayerCharacter.GetComponentInChildren<SkillController>().SkillStatusData;
-        float gap = (lv - preLV) * statValuePerLV;
+        float gap = (baseSkillData.LV - preLV) * statValuePerLV;
 
         if (statusData == null)
             return;

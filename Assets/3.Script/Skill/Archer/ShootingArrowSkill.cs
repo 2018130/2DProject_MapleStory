@@ -14,6 +14,9 @@ public class ShootingArrowSkill : ActiveSkill
 
     public override void StartSkill()
     {
+        if (baseSkillData.LV == 0)
+            return;
+
         bool canSkill = canUseSkillWhileJumping ||
             (!canUseSkillWhileJumping && ownedWeapon.Owner.StateMuchine.CurrentState.GetType() != new JumpState().GetType());
         if (!skillController.IsPlayingAnySkill && canSkill)
@@ -68,8 +71,6 @@ public class ShootingArrowSkill : ActiveSkill
         {
             if (enemy.transform.CompareTag("Enemy"))
             {
-                PlayerCharacterData playerCharacterData = ((PlayerCharacter)ownedWeapon.Owner).PlayerCharacterData;
-
                 arrow.Spawn(ownedWeapon.Owner, enemy.transform, arrowSpawnPoint.position, CalculateDamage());
                 return;
             }
@@ -81,16 +82,15 @@ public class ShootingArrowSkill : ActiveSkill
     public override float CalculateDamage()
     {
         float atkWeight = StatusController.Instance.GetTotalValueByType(StatusType.Atk);
-        atkWeight += StatusController.Instance.GetTotalValueByType(StatusType.DEX) * 0.4f;
-        atkWeight += UnityEngine.Random.Range(StatusController.Instance.GetTotalValueByType(StatusType.LUK),
-            0.4f * StatusController.Instance.GetTotalValueByType(StatusType.LUK));
+        atkWeight += UnityEngine.Random.Range(StatusController.Instance.GetTotalValueByType(StatusType.DEX),
+            2 * StatusController.Instance.GetTotalValueByType(StatusType.DEX)) * 0.4f;
 
         return atkWeight * (GetSkillDamagePercent() / 100);
     }
 
     public override float GetSkillDamagePercent()
     {
-        return 110 + lv;
+        return 110 + LV;
     }
 
     private void OnDrawGizmos()

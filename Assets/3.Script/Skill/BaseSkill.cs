@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
+[Serializable]
 public enum SkillType
 {
     None,
@@ -12,6 +13,14 @@ public enum SkillType
 }
 
 [Serializable]
+public class BaseSkillData
+{
+    [SerializeField]
+    public string SkillName;
+    [SerializeField]
+    public int LV;
+}
+
 public class BaseSkill : MonoBehaviour
 {
     [Header("BaseSkill")]
@@ -20,11 +29,7 @@ public class BaseSkill : MonoBehaviour
     [SerializeField]
     protected int maxLV = 0;
     [SerializeField]
-    protected int lv = 0;
-    [SerializeField]
     protected int requireMPAmount;
-    [SerializeField]
-    protected string skillName;
     [SerializeField]
     protected string description;
 
@@ -32,9 +37,13 @@ public class BaseSkill : MonoBehaviour
     protected string skillImageKey;
     protected Sprite skillImage;
 
+    protected BaseSkillData baseSkillData;
+    public BaseSkillData BaseSkillData => baseSkillData;
+
     public string Description => description;
-    public int LV => lv;
-    public string SkillName => skillName;
+    public int MaxLV => maxLV;
+    public int LV => baseSkillData.LV;
+    public string SkillName => baseSkillData.SkillName;
     public Sprite SkillImage => skillImage;
 
     protected Weapon ownedWeapon;
@@ -59,9 +68,21 @@ public class BaseSkill : MonoBehaviour
         this.ownedWeapon = ownedWeapon;
     }
 
-    public virtual void UpgradeLv(int amount)
+    public virtual void UpgradeLv()
     {
-        lv = Mathf.Clamp(amount + lv, 0, maxLV);
+        if (GameManager.Instance.CurrentSceneContext.PlayerCharacter.PlayerCharacterData.RemainSkillLV < 1 ||
+            1 + baseSkillData.LV > maxLV)
+            return;
+
+        GameManager.Instance.CurrentSceneContext.PlayerCharacter.PlayerCharacterData.RemainSkillLV -= 1;
+        GameManager.Instance.CurrentSceneContext.MainUIManager.SkillInventory.
+            SetSkillPoint(GameManager.Instance.CurrentSceneContext.PlayerCharacter.PlayerCharacterData.RemainSkillLV);
+        baseSkillData.LV++;
         OnUpgradeLV?.Invoke(this);
+    }
+
+    public virtual void Copy(BaseSkillData baseSkill)
+    {
+        baseSkillData.LV = baseSkill.LV;
     }
 }

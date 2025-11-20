@@ -14,8 +14,6 @@ public class SkillBox : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     [SerializeField]
     private Text skillLv;
 
-    private bool isHovered = false;
-
     [SerializeField]
     private Button LevelupBtn;
 
@@ -30,15 +28,30 @@ public class SkillBox : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
         skillName.text = skillData.SkillName;
         UpdateSkillLV(skillData);
 
+        SetUpgradeBtnImage();
         OnMouseHover -= mouseHoverCallback;
         OnMouseHover += mouseHoverCallback;
-        LevelupBtn.onClick.AddListener(() => skillData.UpgradeLv(1));
+        LevelupBtn.onClick.AddListener(skillData.UpgradeLv);
     }
 
     public void UpdateSkillLV(BaseSkill skillData)
     {
         skillLv.text = skillData.LV.ToString();
     }
+
+    public void SetUpgradeBtnImage()
+    {
+        if (GameManager.Instance.CurrentSceneContext.PlayerCharacter.PlayerCharacterData.RemainSkillLV > 0 &&
+               skillData.LV < skillData.MaxLV)
+        {
+            LevelupBtn.GetComponent<Image>().color = Color.orange;
+        }
+        else
+        {
+            LevelupBtn.GetComponent<Image>().color = Color.gray;
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         OnMouseHover?.Invoke(true, eventData.position, skillData);

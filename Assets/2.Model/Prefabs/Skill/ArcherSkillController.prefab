@@ -78,19 +78,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShootingArrowSkill
   skillType: 1
   maxLV: 20
-  lv: 1
   requireMPAmount: 10
-  skillName: "\uC5D0\uB85C\uC6B0 \uC0F7"
   description: "\uD654\uC0B4\uC744 \uC3F4  {skillDamagePercent}\uC758 \uB370\uBBF8\uC9C0\uB85C
     {atkCount}\uBC88 \uACF5\uACA9\uD569\uB2C8\uB2E4"
   skillImageKey: 410101
-  atkCount: 1
-  atkRate: 0.5
   skillHitTargetLayer:
     serializedVersion: 2
     m_Bits: 128
   canMoveWhileUsingSkill: 0
   canUseSkillWhileJumping: 0
+  activeSkillData:
+    SkillName: "\uC5D0\uB85C\uC6B0 \uC0F7"
+    LV: 1
+    AtkCount: 1
+    AtkRate: 0.3
   arrowItemCode: 120101
   arrowSpawnPoint: {fileID: 7195958356023123889}
 --- !u!1 &2533691844878347974
@@ -199,14 +200,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PassiveSkill
   skillType: 2
   maxLV: 20
-  lv: 0
   requireMPAmount: 0
-  skillName: "\uD5A5\uC0C1\uB41C \uAE30\uBCF8\uAE30"
   description: "{statusType}\uB97C {statusValuePerLV}\uB9CC\uD07C \uC0C1\uC2B9\uC2DC\uD0B5\uB2C8\uB2E4,
     \uD604\uC7AC \uCD1D \uC0C1\uC2B9\uB7C9 : {statusValue}"
   skillImageKey: 410103
   statusType: 4
   statValuePerLV: 1
+  passiveSkillData:
+    SkillName: "\uC544\uB9C8\uC874\uC758 \uCD95\uBCF5"
+    LV: 0
 --- !u!1 &8769445419690467386
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,11 +255,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PassiveSkill
   skillType: 2
   maxLV: 20
-  lv: 0
   requireMPAmount: 0
-  skillName: "\uD3EC\uCEE4\uC2A4"
   description: "{statusType}\uB97C {statusValuePerLV}\uB9CC\uD07C \uC0C1\uC2B9\uC2DC\uD0B5\uB2C8\uB2E4,
     \uD604\uC7AC \uCD1D \uC0C1\uC2B9\uB7C9 : {statusValue}"
   skillImageKey: 410102
   statusType: 8
   statValuePerLV: 2
+  passiveSkillData:
+    SkillName: "\uD3EC\uCEE4\uC2A4"
+    LV: 0

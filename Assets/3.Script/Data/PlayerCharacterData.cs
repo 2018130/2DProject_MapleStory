@@ -4,8 +4,8 @@ using UnityEngine;
 [Serializable]
 public class PlayerCharacterData
 {
-    [SerializeField]
     // 키 중복검사는 하지 않음
+    [SerializeField]
     private string key;
     public string Key => key;
 
@@ -15,6 +15,9 @@ public class PlayerCharacterData
     // 플레이어 현재 경험치 량
     [SerializeField]
     public int EXP;
+
+    [SerializeField]
+    public int RemainSkillLV;
 
     [SerializeField]
     public StatusData statusData;

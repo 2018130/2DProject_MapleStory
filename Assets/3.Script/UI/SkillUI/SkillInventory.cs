@@ -19,16 +19,19 @@ public class SkillInventory : MonoBehaviour,ISceneContextBuilt
     private GameObject contents;
     [SerializeField]
     private GameObject tooltip;
+    [SerializeField]
+    private Text skillPointText;
 
     // SkillData
     private SkillController skillController;
 
-    public int Priority { get; set; }
+    public int Priority { get; set; } = 2;
 
     public void OnSceneContextBuilt()
     {
         skillController = GameManager.Instance.CurrentSceneContext.PlayerCharacter.GetComponentInChildren<SkillController>();
         Initialize();
+        SetSkillPoint(GameManager.Instance.CurrentSceneContext.PlayerCharacter.PlayerCharacterData.RemainSkillLV);
     }
 
     private void Awake()
@@ -60,6 +63,7 @@ public class SkillInventory : MonoBehaviour,ISceneContextBuilt
             SkillBox skillBox = Instantiate(skillBoxPrefab, contents.transform).GetComponent<SkillBox>();
             skillBox.SetSkill(skillController.ActiveSkillList[i], SetTooltip);
             skillController.ActiveSkillList[i].OnUpgradeLV += skillBox.UpdateSkillLV;
+            skillController.ActiveSkillList[i].OnUpgradeLV += SetAllSkillBoxUpgradeBtnColor;
 
             contentsRect.sizeDelta += new Vector2(0, boxSize);
         }
@@ -68,9 +72,23 @@ public class SkillInventory : MonoBehaviour,ISceneContextBuilt
             SkillBox skillBox = Instantiate(skillBoxPrefab, contents.transform).GetComponent<SkillBox>();
             skillBox.SetSkill(skillController.PassiveSkillList[i], SetTooltip);
             skillController.PassiveSkillList[i].OnUpgradeLV += skillBox.UpdateSkillLV;
+            skillController.PassiveSkillList[i].OnUpgradeLV += SetAllSkillBoxUpgradeBtnColor;
 
             contentsRect.sizeDelta += new Vector2(0, boxSize);
         }
+    }
+
+    private void SetAllSkillBoxUpgradeBtnColor(BaseSkill baseSkill)
+    {
+        for(int i = 0; i < contents.transform.childCount; i++)
+        {
+            contents.transform.GetChild(i).GetComponent<SkillBox>().SetUpgradeBtnImage();
+        }
+    }
+
+    public void SetSkillPoint(int skillPoint)
+    {
+        skillPointText.text = skillPoint.ToString();
     }
 
     private void SetTooltip(bool active, Vector2 postion, BaseSkill skillData = null)

@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+public class ActiveSkillData : BaseSkillData
+{
+    [SerializeField]
+    public int AtkCount;
+    [SerializeField]
+    public float AtkRate;
+}
+
 public class ActiveSkill : BaseSkill
 {
     [Header("ActiveSkill")]
-    [SerializeField]
-    protected int atkCount;
-    [SerializeField]
-    protected float atkRate;
     [SerializeField]
     protected LayerMask skillHitTargetLayer;
     // 스킬 사용중에 움직일 수 있는지
@@ -22,11 +26,16 @@ public class ActiveSkill : BaseSkill
 
     protected SkillController skillController;
 
-    public int ATKCount => atkCount;
+    [SerializeField]
+    private ActiveSkillData activeSkillData;
+    public ActiveSkillData ActiveSkillData => activeSkillData;
+
+    public int ATKCount => activeSkillData.AtkCount;
 
     protected override void Start()
     {
         base.Start();
+        baseSkillData = activeSkillData;
         skillController = GetComponentInParent<SkillController>();
         skillType = SkillType.Active;
     }
@@ -41,5 +50,14 @@ public class ActiveSkill : BaseSkill
     public virtual void EndSkill()
     {
         skillController.IsPlayingAnySkill = false;
+    }
+
+    public override void Copy(BaseSkillData activeSkill)
+    {
+        base.Copy(activeSkill);
+
+        ActiveSkillData activeSkillData = (ActiveSkillData)activeSkill;
+        this.activeSkillData.AtkCount = activeSkillData.AtkCount;
+        this.activeSkillData.AtkRate = activeSkillData.AtkRate;
     }
 }

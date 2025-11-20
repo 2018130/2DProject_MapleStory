@@ -25,9 +25,9 @@ public class SkillController : MonoBehaviour, ISceneContextBuilt
 
     private void Awake()
     {
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            if(transform.GetChild(i).TryGetComponent(out ActiveSkill activeSkill))
+            if (transform.GetChild(i).TryGetComponent(out ActiveSkill activeSkill))
             {
                 activeSkillList.Add(activeSkill);
             }
@@ -38,9 +38,19 @@ public class SkillController : MonoBehaviour, ISceneContextBuilt
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveSkillJsonData();
+    }
+    public void OnSceneContextBuilt()
+    {
+        LoadSkillJsonData();
+        StatusController.Instance.AddStatusData(skillStatusData);
+    }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             GetActiveSkill("¿¡·Î¿ì ¼¦").StartSkill();
         }
@@ -51,8 +61,34 @@ public class SkillController : MonoBehaviour, ISceneContextBuilt
         return activeSkillList.Find(x => x.SkillName == skillName);
     }
 
-    public void OnSceneContextBuilt()
+    private void LoadSkillJsonData()
     {
-        StatusController.Instance.AddStatusData(skillStatusData);
+        Debug.Log(PersistentDataManager.Instance);
+        SkillDataJson sdj = PersistentDataManager.Instance.LoadSkillDataFromJson();
+        sdj.activeSkillList.ForEach(x =>
+        {
+            ActiveSkill ac = ActiveSkillList.Find(y => y.SkillName == x.SkillName);
+            if (ac != null)
+            {
+                ac.Copy(x);
+            }
+        });
+        sdj.passiveSkillList.ForEach(x =>
+        {
+            PassiveSkill ps = passiveSkillList.Find(y => y.SkillName == x.SkillName);
+            if (ps != null)
+            {
+                ps.Copy(x);
+
+            }
+        });
+    }
+    private void SaveSkillJsonData()
+    {
+        SkillDataJson skillDataJson = new SkillDataJson();
+        activeSkillList.ForEach(x => skillDataJson.activeSkillList.Add(x.ActiveSkillData));
+        passiveSkillList.ForEach(x => skillDataJson.passiveSkillList.Add(x.BaseSkillData));
+
+        PersistentDataManager.Instance.SaveToJson(skillDataJson);
     }
 }

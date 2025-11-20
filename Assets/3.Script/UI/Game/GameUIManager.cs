@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour, ISceneContextBuilt
 {
+    #region skill controller
+    [SerializeField]
+    private SkillInventory skillInventory;
+    public SkillInventory SkillInventory => skillInventory;
+    #endregion
     #region damageUI
     [SerializeField]
     private DamageUIController damageUIController;

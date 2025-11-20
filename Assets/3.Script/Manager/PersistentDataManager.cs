@@ -11,12 +11,24 @@ public class PlayerCharacterDataJson
     public List<PlayerCharacterData> data = new List<PlayerCharacterData>();
 }
 
+[Serializable]
+public class SkillDataJson
+{
+    [SerializeField]
+    public List<ActiveSkillData> activeSkillList = new List<ActiveSkillData>();
+    [SerializeField]
+    public List<BaseSkillData> passiveSkillList = new List<BaseSkillData>();
+}
+
 public class PersistentDataManager : SingletonBehaviour<PersistentDataManager>
 {
     private string dataPath;
 
     private string playerCharacterDataFileName = "playerCharacter.json";
     private PlayerCharacterDataJson playerCharacterDataJson = new PlayerCharacterDataJson();
+
+    private string skillDataFileName = "skill.json";
+    private SkillDataJson skillDataJson = new SkillDataJson();
 
     private void Start()
     {
@@ -27,7 +39,7 @@ public class PersistentDataManager : SingletonBehaviour<PersistentDataManager>
     {
         string jsonData = JsonUtility.ToJson(playerCharacterDataJson, true);
         File.WriteAllText(Path.Combine(dataPath, playerCharacterDataFileName), jsonData);
-        Debug.Log($"Save data to json path : {dataPath}");
+        //Debug.Log($"Save data to json path : {dataPath}");
     }
 
     public PlayerCharacterDataJson LoadFromJson()
@@ -46,4 +58,25 @@ public class PersistentDataManager : SingletonBehaviour<PersistentDataManager>
         return playerCharacterDataJson;
     }
 
+    public void SaveToJson(SkillDataJson skillDataJson)
+    {
+        string jsonData = JsonUtility.ToJson(skillDataJson, true);
+        File.WriteAllText(Path.Combine(dataPath, skillDataFileName), jsonData);
+        //Debug.Log($"Save data to json path : {dataPath}");
+    }
+    public SkillDataJson LoadSkillDataFromJson()
+    {
+        string jsonData = File.ReadAllText(Path.Combine(dataPath, skillDataFileName));
+
+        if (jsonData.Length == 0)
+        {
+            skillDataJson = new SkillDataJson();
+        }
+        else
+        {
+            skillDataJson = JsonUtility.FromJson<SkillDataJson>(jsonData);
+        }
+
+        return skillDataJson;
+    }
 }

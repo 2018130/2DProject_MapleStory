@@ -23,28 +23,34 @@ public class DamageUI : MonoBehaviour
         float posX = 0;
         float size = 40;
         float maxPosY = 5;
+        List<int> damageDigit = new List<int>();
 
         while(damage % 10 != 0)
         {
             int digitNum = damage % 10;
             damage /= 10;
 
+            damageDigit.Add(digitNum);
+        }
+
+        damageDigit.Reverse();
+
+        foreach (var digit in damageDigit)
+        {
             GameObject gameObject = new GameObject("", typeof(RectTransform));
             RectTransform spawnedObjRect = gameObject.GetComponent<RectTransform>();
             spawnedObjRect.sizeDelta = new Vector2(size, size);
 
-            gameObject.AddComponent<Image>().sprite = numberSprites[digitNum];
+            gameObject.AddComponent<Image>().sprite = numberSprites[digit];
             gameObject.transform.SetParent(contents.transform);
             spawnedObjRect.transform.localPosition = new Vector2(posX, UnityEngine.Random.Range(0, maxPosY));
 
 
             posX += spawnedObjRect.rect.width;
         }
-
         StartCoroutine(DamageLife_co());
     }
 
-    // TODO : set color and alpha
     private IEnumerator DamageLife_co()
     {
         float speed = GameManager.Instance.CurrentSceneContext.MainUIManager.DamageUIController.DamageUISpeed;

@@ -168,6 +168,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
     public void LevelUp(int lv)
     {
+        playerCharacterData.RemainSkillLV += 3;
         OnChangedLV?.Invoke(lv);
     }
 
