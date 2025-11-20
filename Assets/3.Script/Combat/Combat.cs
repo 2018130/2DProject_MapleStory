@@ -28,13 +28,11 @@ public class Combat : MonoBehaviour
 
     public void Initialize(float maxHP, float maxMP)
     {
-        hp = maxHP;
         this.maxHP = maxHP;
-        mp = maxMP;
+        AddHP(maxHP);
         this.maxMP = maxMP;
+        AddMP(maxMP);
 
-        AddMP(0);
-        AddHP(0);
     }
 
     public void AddMP(float mpAmount)

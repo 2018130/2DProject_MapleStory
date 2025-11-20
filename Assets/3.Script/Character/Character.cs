@@ -95,7 +95,7 @@ public class Character : MonoBehaviour
 
     public virtual void MoveForward()
     {
-        MoveTo(transform.position + moveDir * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime);
+        
     }
 
     public virtual void SetMoveDir(Vector3 newMoveDir)

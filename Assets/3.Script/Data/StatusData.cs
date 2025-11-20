@@ -1,9 +1,26 @@
 using System;
 using UnityEngine;
+public enum StatusType
+{
+    None,
+    Speed,
+    JumpForce,
+    ExpRate,
+    Atk,
+    MaxHP,
+    MaxMP,
+    STR,
+    DEX,
+    INT,
+    LUK,
+}
 
 [Serializable]
 public class StatusData
 {
+    [SerializeField]
+    private string key;
+
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
@@ -12,6 +29,10 @@ public class StatusData
     // »ç¸Á ½Ã È¹µæ °æÇèÄ¡ ·®
     [SerializeField]
     private int expAmount;
+
+    // °æÇèÄ¡ ¹èÀ²
+    [SerializeField]
+    private float expRate;
 
     [SerializeField]
     private int atk;
@@ -28,31 +49,104 @@ public class StatusData
     [SerializeField]
     private int luk;
 
-    public int ATK => atk;
-    public int MaxHP => maxHP;
-    public int MaxMP => maxMP;
-    public int STR => str;
-    public int DEX => dex;
-    public int INT => integer;
-    public int LUK => luk;
-    public float MoveSpeed => moveSpeed;
-    public float JumpForce => jumpForce;
+    #region properties
+    public string Key
+    {
+        get => key;
+    }
+
+    public int ATK
+    {
+        get => atk;
+        set => atk = value;
+    }
+
+    public int MaxHP
+    {
+        get => maxHP;
+        set => maxHP = value;
+    }
+
+    public int MaxMP
+    {
+        get => maxMP;
+        set => maxMP = value;
+    }
+
+    public int STR
+    {
+        get => str;
+        set => str = value;
+    }
+
+    public int DEX
+    {
+        get => dex;
+        set => dex = value;
+    }
+
+    public int INT
+    {
+        get => integer;
+        set => integer = value;
+    }
+
+    public int LUK
+    {
+        get => luk;
+        set => luk = value;
+    }
+
+    public float MoveSpeed
+    {
+        get => moveSpeed;
+        set => moveSpeed = value;
+    }
+
+    public float JumpForce
+    {
+        get => jumpForce;
+        set => jumpForce = value;
+    }
+
+    public float EXPRate
+    {
+        get => expRate;
+        set => expRate = value;
+    }
+    #endregion
 
     public int GetEXPAmount()
     {
         return expAmount;
     }
 
-    public StatusData()
+    public StatusData(bool isCharacterStat)
     {
-        this.atk = 3;
-        this.str = 4;
-        this.dex = 4;
-        this.integer = 4;
-        this.luk = 4;
-        this.moveSpeed = 1f;
-        this.jumpForce = 4.5f;
-        expAmount = 10;
+        if(isCharacterStat)
+        {
+            this.atk = 3;
+            this.str = 4;
+            this.dex = 4;
+            this.integer = 4;
+            this.luk = 4;
+            this.moveSpeed = 1f;
+            this.jumpForce = 4.5f;
+            expAmount = 10;
+        }
+        else
+        {
+            this.atk = 0;
+            this.str = 0;
+            this.dex = 0;
+            this.integer = 0;
+            this.luk = 0;
+            this.moveSpeed = 0;
+            this.jumpForce = 0;
+            expAmount = 0;
+        }
+
+        key = DateTime.Now.ToString("yyyyMMddHHmmssfff");
     }
 
     public StatusData(int str, int dex, int integer, int luk)
@@ -65,6 +159,8 @@ public class StatusData
         this.moveSpeed = 1f;
         this.jumpForce = 4.5f;
         expAmount = 10;
+
+        key = DateTime.Now.ToString("yyyyMMddHHmmssfff");
     }
 
     public void SetRandomStatus()

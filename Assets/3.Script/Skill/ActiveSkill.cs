@@ -8,11 +8,9 @@ public class ActiveSkill : BaseSkill
 {
     [Header("ActiveSkill")]
     [SerializeField]
+    protected int atkCount;
+    [SerializeField]
     protected float atkRate;
-    [SerializeField]
-    protected float baseCooltime;
-    [SerializeField]
-    protected float baseRequireMP;
     [SerializeField]
     protected LayerMask skillHitTargetLayer;
     // 스킬 사용중에 움직일 수 있는지
@@ -24,6 +22,8 @@ public class ActiveSkill : BaseSkill
 
     protected SkillController skillController;
 
+    public int ATKCount => atkCount;
+
     protected override void Start()
     {
         base.Start();
@@ -31,7 +31,9 @@ public class ActiveSkill : BaseSkill
         skillType = SkillType.Active;
     }
 
-    protected virtual float CalculateDamage() { return -1; }
+    public virtual float CalculateDamage() { return 0; }
+
+    public virtual float GetSkillDamagePercent() { return 0; }
 
     public virtual void StartSkill() { }
 

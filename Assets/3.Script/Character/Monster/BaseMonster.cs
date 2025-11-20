@@ -18,6 +18,12 @@ public class BaseMonster : Character, ISceneContextBuilt
 
     public int Priority { get; set; } = 0;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        combat.Initialize(characterData.statusData.MaxHP, characterData.statusData.MaxMP);
+    }
     public void OnSceneContextBuilt()
     {
         StartCoroutine(Move_co());
@@ -47,6 +53,12 @@ public class BaseMonster : Character, ISceneContextBuilt
 
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    public override void MoveForward()
+    {
+        float speed = characterData.statusData.MoveSpeed;
+        MoveTo(transform.position + speed * moveDir * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime);
     }
 
     public override void Jump()

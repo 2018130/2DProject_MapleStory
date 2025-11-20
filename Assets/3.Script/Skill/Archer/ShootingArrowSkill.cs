@@ -14,8 +14,6 @@ public class ShootingArrowSkill : ActiveSkill
 
     public override void StartSkill()
     {
-        
-
         bool canSkill = canUseSkillWhileJumping ||
             (!canUseSkillWhileJumping && ownedWeapon.Owner.StateMuchine.CurrentState.GetType() != new JumpState().GetType());
         if (!skillController.IsPlayingAnySkill && canSkill)
@@ -72,7 +70,7 @@ public class ShootingArrowSkill : ActiveSkill
             {
                 PlayerCharacterData playerCharacterData = ((PlayerCharacter)ownedWeapon.Owner).PlayerCharacterData;
 
-                arrow.Spawn(ownedWeapon.Owner, enemy.transform, arrowSpawnPoint.position, CalculateDamage() * atkRate * (10 + lv));
+                arrow.Spawn(ownedWeapon.Owner, enemy.transform, arrowSpawnPoint.position, CalculateDamage());
                 return;
             }
         }
@@ -80,15 +78,19 @@ public class ShootingArrowSkill : ActiveSkill
         arrow.Spawn(ownedWeapon.Owner, null, arrowSpawnPoint.position, 1);
     }
 
-    protected override float CalculateDamage()
+    public override float CalculateDamage()
     {
-        PlayerCharacterData playerCharacterData = ((PlayerCharacter)ownedWeapon.Owner).PlayerCharacterData;
+        float atkWeight = StatusController.Instance.GetTotalValueByType(StatusType.Atk);
+        atkWeight += StatusController.Instance.GetTotalValueByType(StatusType.DEX) * 0.4f;
+        atkWeight += UnityEngine.Random.Range(StatusController.Instance.GetTotalValueByType(StatusType.LUK),
+            0.4f * StatusController.Instance.GetTotalValueByType(StatusType.LUK));
 
-        float atkWeight = playerCharacterData.statusData.ATK;
-        atkWeight += playerCharacterData.statusData.DEX * 0.4f;
-        atkWeight += UnityEngine.Random.Range(playerCharacterData.statusData.LUK, 0.4f * playerCharacterData.statusData.LUK);
+        return atkWeight * (GetSkillDamagePercent() / 100);
+    }
 
-        return atkWeight;
+    public override float GetSkillDamagePercent()
+    {
+        return 110 + lv;
     }
 
     private void OnDrawGizmos()

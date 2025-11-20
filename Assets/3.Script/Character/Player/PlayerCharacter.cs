@@ -33,6 +33,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     public void OnSceneContextBuilt()
     {
         playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
+        StatusController.Instance.AddStatusData(playerCharacterData.statusData);
 
         if (this is not TitleCharacter)
         {
@@ -147,11 +148,16 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         jumpCount = 0;
     }
 
+    public override void MoveForward()
+    {
+        float speed = playerCharacterData.statusData.MoveSpeed;
+        MoveTo(transform.position + speed * moveDir * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime);
+    }
     public void AddExp(int expAmount)
     {
         int lv = playerCharacterData.GetLevel();
 
-        playerCharacterData.EXP += expAmount;
+        playerCharacterData.EXP += (int)((StatusController.Instance.GetTotalValueByType(StatusType.ExpRate) + 1) * expAmount);
 
         if(playerCharacterData.GetLevel() >= lv)
         {

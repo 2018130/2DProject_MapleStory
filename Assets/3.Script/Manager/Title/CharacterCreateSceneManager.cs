@@ -9,7 +9,7 @@ public class CharacterCreateSceneManager : MonoBehaviour
 
     private void Start()
     {
-        statusData = new StatusData();
+        statusData = new StatusData(true);
         signBoard.SetCurrentStatusData(statusData);
         statusData.SetRandomStatus();
 
