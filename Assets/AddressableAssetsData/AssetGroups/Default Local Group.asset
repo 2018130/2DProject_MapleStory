@@ -21,16 +21,77 @@ MonoBehaviour:
     m_SerializedLabels:
     - Item
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a67ce5e3cb6f404685c78479021a3c9
+    m_Address: 411009
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47c2fcf91ca9b3a40bfe88217225d8c9
+    m_Address: 411002
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4900cf897fbe8c24581ac2919ab66a77
+    m_Address: 411001
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b635250413b27744b0d4db13026b3df
+    m_Address: 411003
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53632c42ae1a50041a79ebc67ab5e53c
+    m_Address: 411008
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6b8ede69b74fa584d860f1f2e08367bd
     m_Address: 410103
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c8fd7ca25a5f3a4e8f2ef92f2af6c9d
+    m_Address: 411005
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8451b6b1bf14a9e4ab4234d8c806090f
+    m_Address: 411004
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 878c6be6b28f7684896163ab83c89aa4
+    m_Address: 411007
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c80a5887b7239a4bbe9eb8e0ee75525
     m_Address: 210101
     m_ReadOnly: 0
     m_SerializedLabels:
     - Skill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5d3eaf28a6012040a36eb09ec959682
+    m_Address: 411006
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7ed561a5855504469b5c468f6124fc4
+    m_Address: 411000
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ab38fce8578c5a0418482251263fee18
     m_Address: 410101
@@ -41,7 +102,8 @@ MonoBehaviour:
   - m_GUID: f3cbdbed53339ab4283be5c4a81db499
     m_Address: 410102
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Sprite
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: c524adfcebb5991489bb2e782a427538, type: 2}

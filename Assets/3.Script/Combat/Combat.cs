@@ -55,6 +55,8 @@ public class Combat : MonoBehaviour
     {
         AddHP(-damage);
 
+        GameManager.Instance.CurrentSceneContext.MainUIManager.CreateDamageUI((int)damage, Camera.main.WorldToScreenPoint(transform.position));
+        
         if (hp <= 0)
         {
             if(attacker != null && attacker.TryGetComponent(out PlayerCharacter pc))

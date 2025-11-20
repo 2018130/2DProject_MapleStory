@@ -6,6 +6,17 @@ using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour, ISceneContextBuilt
 {
+    #region damageUI
+    [SerializeField]
+    private DamageUIController damageUIController;
+    public DamageUIController DamageUIController => damageUIController;
+
+    public void CreateDamageUI(int damage, Vector2 spawnPosition)
+    {
+        damageUIController.CreateDamageUI(damage, spawnPosition);
+    }
+    #endregion
+    #region status
     [Header("Status")]
     [SerializeField]
     private Text lvText;
@@ -65,5 +76,6 @@ public class GameUIManager : MonoBehaviour, ISceneContextBuilt
         expText.text = $"{value.ToString("0")}[{((value / maxValue) * 100).ToString("00.00")}%]";
         expSlider.value = value / maxValue;
     }
+    #endregion
 
 }

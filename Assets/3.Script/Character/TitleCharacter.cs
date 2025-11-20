@@ -31,7 +31,7 @@ public class TitleCharacter : PlayerCharacter
 
         if (characterNameImage == null)
         {
-            characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.MainCanvas.transform);
+            characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.MainUIManager.transform);
         }
 
         characterNameImage.SetTextUIToWorldObj(transform.position, base.playerCharacterData.CharacterName);

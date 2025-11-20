@@ -17,8 +17,8 @@ public class SceneContext : MonoBehaviour
     private PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
-    private Canvas mainCanvas;
-    public Canvas MainCanvas => mainCanvas;
+    private GameUIManager mainUIManager;
+    public GameUIManager MainUIManager => mainUIManager;
 
     public void Initialize(PlayerCharacterData data = null)
     {
@@ -28,6 +28,6 @@ public class SceneContext : MonoBehaviour
         }
 
         playerCharacter = FindAnyObjectByType<PlayerCharacter>();
-        mainCanvas = FindAnyObjectByType<Canvas>();
+        mainUIManager = FindAnyObjectByType<GameUIManager>();
     }
 }
