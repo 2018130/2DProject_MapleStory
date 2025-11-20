@@ -63,6 +63,14 @@ IPointerEnterHandler, IPointerExitHandler인터페이스를 상속받아 구현
 스킬 설명에 컴파일 타임 시점에 변수가 아닌 값을 포맷문자열로 넘겨야 하는 기능이 있어
 string.Replace를 사용하여 구현 
 
+데미지 ui에 페이드 아웃 기능을 넣기 위해 
+코루틴을 사용하여 알파값을 조정
+
+월드공간에 있는 몬스터와 스크린 공간에 있는 데미지 ui의 위치를 맞추기 위해
+ Camera.main.WorldToScreenPoint(transform.position)을 사용
+
+json저장 시 함수 오버로딩하여 구현
+
 =============================================
 최적화
 
