@@ -11,10 +11,10 @@ public class ShootingArrowSkill : ActiveSkill
     [SerializeField]
     private Transform arrowSpawnPoint;
 
-
     public override void StartSkill()
     {
-        if (baseSkillData.LV == 0)
+        if (baseSkillData.LV == 0 ||
+            DateTime.Now.Subtract(preSkillPlayedTime) < TimeSpan.FromSeconds(1 / ActiveSkillData.AtkRate))
             return;
 
         bool canSkill = canUseSkillWhileJumping ||
@@ -37,6 +37,7 @@ public class ShootingArrowSkill : ActiveSkill
                 combat.AddMP(-requireMPAmount);
             }
 
+            preSkillPlayedTime = DateTime.Now;
             Shoot();
         }
     }

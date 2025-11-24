@@ -30,6 +30,8 @@ public class ActiveSkill : BaseSkill
     private ActiveSkillData activeSkillData;
     public ActiveSkillData ActiveSkillData => activeSkillData;
 
+    protected DateTime preSkillPlayedTime = DateTime.MinValue;
+
     public int ATKCount => activeSkillData.AtkCount;
 
     protected override void Start()
