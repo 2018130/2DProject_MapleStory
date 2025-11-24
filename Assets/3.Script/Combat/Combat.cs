@@ -53,6 +53,14 @@ public class Combat : MonoBehaviour
 
     public void TakeDamage(float damage, Combat attacker)
     {
+        Debug.Log("1111");
+        if(TryGetComponent(out Character character))
+        {
+            Debug.Log("2222");
+            if (character.IsInvincible)
+                return;
+        }
+
         AddHP(-damage);
 
         GameManager.Instance.CurrentSceneContext.MainUIManager.CreateDamageUI((int)damage, Camera.main.WorldToScreenPoint(transform.position));

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &158434360847430440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2653795718187665197}
+  m_Layer: 0
+  m_Name: ForwardGroundCheckPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2653795718187665197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158434360847430440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 711479417189322495}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &896746431646222109
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,6 +155,7 @@ GameObject:
   - component: {fileID: 711479417189322495}
   - component: {fileID: 8703898175086692714}
   - component: {fileID: 1399373671532516308}
+  - component: {fileID: 2999141033759940924}
   m_Layer: 0
   m_Name: OrangeMushroom
   m_TagString: Untagged
@@ -145,6 +177,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1219545330999748542}
+  - {fileID: 3765759083452695092}
+  - {fileID: 2653795718187665197}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8703898175086692714
@@ -159,9 +193,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8db28947b81d30458c61043e67458c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseMonster
+  gravityForce: 9.81
+  blockLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckRayDistance: 0.1
+  forwardGroundCheckRayDistance: 0.5
+  groundCheckOffset: {fileID: 3765759083452695092}
+  forwardGroundCheckOffset: {fileID: 2653795718187665197}
+  isGrounded: 0
+  combat: {fileID: 0}
+  isInvincible: 0
+  isStuned: 0
   characterData: {fileID: 11400000, guid: 07833e13219179746a3693c324b27129, type: 2}
-  minMoveDirTime: 2
-  maxMoveDirTime: 7
+  minTurnTime: 2
+  maxTurnTime: 7
 --- !u!70 &1399373671532516308
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -199,3 +245,46 @@ CapsuleCollider2D:
   m_Offset: {x: -0.013220787, y: -0.069382995}
   m_Size: {x: 0.4832164, y: 0.5004278}
   m_Direction: 0
+--- !u!114 &2999141033759940924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4597112278190794933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7a73f7b74eb2dd408fc384d549b5960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StateMuchine
+--- !u!1 &7005304753532163448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3765759083452695092}
+  m_Layer: 0
+  m_Name: GroundCheckPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3765759083452695092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7005304753532163448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.217, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 711479417189322495}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

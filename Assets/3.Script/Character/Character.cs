@@ -17,6 +17,8 @@ public class Character : MonoBehaviour
     protected StateMuchine stateMuchine;
     public StateMuchine StateMuchine => stateMuchine;
 
+    protected Collider2D collider;
+
     [Header("Physics Setting")]
     [SerializeField]
     protected float gravityForce = 9.81f;
@@ -25,11 +27,16 @@ public class Character : MonoBehaviour
     [SerializeField]
     protected float groundCheckRayDistance = 0.3f;
     [SerializeField]
+    protected float forwardGroundCheckRayDistance = 0.3f;
+    [SerializeField]
     protected Transform groundCheckOffset;
+    [SerializeField]
+    protected Transform forwardGroundCheckOffset;
 
     [Header("Physics Move")]
     [SerializeField]
     protected bool isGrounded = false;
+    protected bool isGroundedForward = true;
 
     [Header("Combat")]
     [SerializeField]
@@ -37,7 +44,13 @@ public class Character : MonoBehaviour
     public Combat Combat => combat;
 
     [Header("State")]
+    [SerializeField]
+    protected bool isInvincible = false;
+    protected float invincibleTime = 1.5f;
+    protected Coroutine invincibilityCountDown_co;
+    [SerializeField]
     protected bool isStuned = false;
+    public bool IsInvincible => isInvincible;
     public bool IsStuned
     {
         get => isStuned;
@@ -46,6 +59,8 @@ public class Character : MonoBehaviour
 
     protected virtual void Awake()
     {
+        collider = GetComponent<Collider2D>();
+
         combat = GetComponent<Combat>();
         combat.BindDeadAction(Die);
 
@@ -141,6 +156,53 @@ public class Character : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public virtual void SetInvincible(bool active)
+    {
+        if (active && invincibilityCountDown_co == null)
+        {
+            invincibilityCountDown_co = StartCoroutine(InvincibilityCountDown_co());
+        }
+
+        isInvincible = active;
+    }
+
+    private IEnumerator InvincibilityCountDown_co()
+    {
+        float timer = 0;
+        float cycleTime = 0f;
+        float twinkleTime = 0.3f;
+        Color color = model.color;
+        color.a = 1f;
+
+        while (timer < invincibleTime)
+        {
+            yield return null;
+
+            timer += Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime;
+            cycleTime += Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime;
+
+            if(cycleTime >= twinkleTime)
+            {
+                cycleTime = 0f;
+                if(Mathf.Approximately(color.a, 0.6f))
+                {
+                    color.a = 1f;
+                }
+                else
+                {
+                    color.a = 0.6f;
+                }
+                model.color = color;
+            }
+        }
+
+        color.a = 1f;
+        model.color = color;
+        invincibilityCountDown_co = null;
+
+        SetInvincible(false);
+    }
+
     public virtual void SetAnimation(string animationKey)
     {
         for (int i = 0; i < animator.parameterCount; i++)
@@ -161,7 +223,7 @@ public class Character : MonoBehaviour
             }
         }
     }
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 

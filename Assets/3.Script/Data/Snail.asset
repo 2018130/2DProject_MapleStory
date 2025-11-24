@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: Snail
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   statusData:
-    key: 
-    moveSpeed: 0
+    key: Snail
+    moveSpeed: 0.5
     jumpForce: 0
-    expAmount: 10
+    expAmount: 23
     expRate: 0
-    additionalSkillLV: 0
     atk: 3
-    maxHP: 100
+    maxHP: 20
     maxMP: 0
     str: 0
     dex: 0

@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: OrangeMushroom
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   statusData:
-    moveSpeed: 0
-    jumpForce: 0
-    atk: 0
-    maxHP: 0
+    key: OrangeMushroom
+    moveSpeed: 0.7
+    jumpForce: 0.3
+    expAmount: 60
+    expRate: 0
+    atk: 10
+    maxHP: 50
+    maxMP: 0
     str: 0
     dex: 0
     integer: 0
