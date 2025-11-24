@@ -153,6 +153,7 @@ public class Character : MonoBehaviour
     }
     public virtual void Dead()
     {
+        StopCoroutine(invincibilityCountDown_co);
         gameObject.SetActive(false);
     }
 
@@ -210,6 +211,16 @@ public class Character : MonoBehaviour
             if (animator.parameters[i].name == animationKey)
             {
                 animator.SetTrigger(animationKey);
+            }
+        }
+    }
+    public virtual void SetAnimation(string animationKey, bool value)
+    {
+        for (int i = 0; i < animator.parameterCount; i++)
+        {
+            if (animator.parameters[i].name == animationKey)
+            {
+                animator.SetBool(animationKey, value);
             }
         }
     }

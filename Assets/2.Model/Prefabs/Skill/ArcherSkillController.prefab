@@ -91,7 +91,7 @@ MonoBehaviour:
     SkillName: "\uC5D0\uB85C\uC6B0 \uC0F7"
     LV: 1
     AtkCount: 1
-    AtkRate: 0.3
+    AtkRate: 1
   arrowItemCode: 120101
   arrowSpawnPoint: {fileID: 7195958356023123889}
 --- !u!1 &2533691844878347974

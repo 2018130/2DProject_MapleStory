@@ -66,7 +66,7 @@ public class BaseMonster : Character, ISceneContextBuilt
 
     public override void MoveForward()
     {
-        if (!isGroundedForward)
+        if (isGrounded && !isGroundedForward)
             return;
 
         float speed = characterData.statusData.MoveSpeed;
@@ -80,8 +80,6 @@ public class BaseMonster : Character, ISceneContextBuilt
 
     private void ProcessBodyHit()
     {
-        ContactFilter2D filter2D = new ContactFilter2D();
-        filter2D.SetLayerMask(LayerMask.NameToLayer("Character"));
         List<Collider2D> colliders = new List<Collider2D>();
 
         if (Physics2D.OverlapCollider(collider, colliders) > 0)

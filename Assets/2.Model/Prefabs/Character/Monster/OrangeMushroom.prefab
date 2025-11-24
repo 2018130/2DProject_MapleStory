@@ -156,7 +156,8 @@ GameObject:
   - component: {fileID: 8703898175086692714}
   - component: {fileID: 1399373671532516308}
   - component: {fileID: 2999141033759940924}
-  m_Layer: 0
+  - component: {fileID: 4318107523654285506}
+  m_Layer: 7
   m_Name: OrangeMushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,6 +258,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a73f7b74eb2dd408fc384d549b5960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StateMuchine
+--- !u!114 &4318107523654285506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4597112278190794933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e64b148492589d4f82a00499fcef6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat
+  factionType: 2
+  hp: 0
 --- !u!1 &7005304753532163448
 GameObject:
   m_ObjectHideFlags: 0

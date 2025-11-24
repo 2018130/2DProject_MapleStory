@@ -9,9 +9,10 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     protected PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
+    public bool isAuto = false;
     public int Priority { get; set; } = 1;
 
-   
+
     [Header("Physics")]
     [SerializeField]
     private bool downArrowJump = false;
@@ -38,6 +39,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         if (this is not TitleCharacter)
         {
             combat.Initialize(playerCharacterData.statusData.MaxHP, playerCharacterData.statusData.MaxMP);
+            downArrowJump = true;
             stateMuchine.ChangeState(new JumpState());
         }
 
@@ -46,52 +48,81 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
     protected override void Update()
     {
-        if (!isGrounded)
+        if (!isGrounded && stateMuchine.CurrentState.GetType() != new HangState().GetType())
         {
             moveDir.y -= gravityForce * Time.deltaTime * GameManager.Instance.CurrentSceneContext.GameDeltaTime;
         }
 
         // 움직임 관련 로직 정의
-        if (!isStuned)
+        if(!isAuto)
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            if (!isStuned)
             {
-                if (Input.GetKey(KeyCode.DownArrow))
+                if (Input.GetKeyDown(KeyCode.LeftAlt))
                 {
-                    downArrowJump = true;
+                    if (Input.GetKey(KeyCode.DownArrow))
+                    {
+                        downArrowJump = true;
+                    }
+
+                    stateMuchine.ChangeState(new JumpState());
                 }
 
-                stateMuchine.ChangeState(new JumpState());
-            }
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    moveDir.x = 1;
+                }
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    moveDir.x = -1;
+                }
+                else
+                {
+                    moveDir.x = 0;
+                }
 
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                moveDir.x = 1;
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveDir.x = -1;
+                Transform hangTransform = CanHanging();
+                if (hangTransform != null)
+                {
+                    float verticalInput = Input.GetAxisRaw("Vertical");
+
+                    if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
+                    {
+                        transform.position = new Vector3(hangTransform.position.x, transform.position.y);
+                        moveDir.y = verticalInput;
+                        stateMuchine.ChangeState(new HangState());
+                    }
+                    else if (stateMuchine.CurrentState.GetType() == new HangState().GetType())
+                    {
+                        transform.position = new Vector3(hangTransform.position.x, transform.position.y);
+                        moveDir.y = 0;
+                    }
+                }
+                else if (stateMuchine.CurrentState.GetType() == new HangState().GetType())
+                {
+                    downArrowJump = true;
+                    stateMuchine.ChangeState(new JumpState());
+                }
             }
             else
             {
                 moveDir.x = 0;
             }
-        }
-        else
-        {
-            moveDir.x = 0;
-        }
 
-        if(moveDir.x != 0 && stateMuchine.CurrentState.GetType() != new JumpState().GetType())
-        {
-            stateMuchine.ChangeState(new WalkState());
+            if (moveDir.x != 0 &&
+                stateMuchine.CurrentState.GetType() != new JumpState().GetType() &&
+                stateMuchine.CurrentState.GetType() != new HangState().GetType())
+            {
+                stateMuchine.ChangeState(new WalkState());
+            }
         }
+        
 
         CheckGround();
         SetAnimation("Speed", moveDir.magnitude);
     }
 
-    
+
 
     protected override void CheckGround()
     {
@@ -110,7 +141,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
             if (hit.collider.CompareTag("OutOfMap") || (!downArrowJump && firstTouchDir == 1))
             {
                 // 착지 후 판단
-                if(moveDir.y < 0.5f && stateMuchine.CurrentState.GetType() == new JumpState().GetType())
+                if (moveDir.y < 0.5f && stateMuchine.CurrentState.GetType() == new JumpState().GetType())
                 {
                     StateMuchine.ChangeState(new IdleState());
                 }
@@ -134,7 +165,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         if (jumpCount >= maxJumpCount)
             return;
 
-        if(!downArrowJump)
+        if (!downArrowJump)
         {
             moveDir.y = playerCharacterData.statusData.JumpForce;
             jumpCount++;
@@ -146,6 +177,37 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         base.EndOfJump();
         downArrowJump = false;
         jumpCount = 0;
+    }
+    public Transform CanHanging()
+    {
+        List<Collider2D> results = new List<Collider2D>();
+
+        if (Physics2D.OverlapCollider(collider, results) > 0)
+        {
+            foreach(var result in results)
+            {
+                if(result.gameObject.layer == LayerMask.NameToLayer("Hangable"))
+                {
+                    return result.transform;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void Hang()
+    {
+        moveDir.y = 0;
+        jumpCount = 0;
+        SetAnimation("IsHangging", true);
+    }
+
+    public void EndOfHang()
+    {
+        moveDir.y = 0;
+        jumpCount = 0;
+        SetAnimation("IsHangging", false);
     }
 
     public override void MoveForward()
@@ -159,7 +221,7 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
         playerCharacterData.EXP += (int)((StatusController.Instance.GetTotalValueByType(StatusType.ExpRate) + 1) * expAmount);
 
-        if(playerCharacterData.GetLevel() >= lv)
+        if (playerCharacterData.GetLevel() >= lv)
         {
             LevelUp(playerCharacterData.GetLevel());
         }
