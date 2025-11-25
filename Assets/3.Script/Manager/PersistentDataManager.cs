@@ -44,18 +44,17 @@ public class PersistentDataManager : SingletonBehaviour<PersistentDataManager>
 
     public PlayerCharacterDataJson LoadFromJson()
     {
-        string jsonData = File.ReadAllText(Path.Combine(dataPath, playerCharacterDataFileName));
+        string path = Path.Combine(dataPath, playerCharacterDataFileName);
 
-        if(jsonData.Length == 0)
+        if(File.Exists(path))
         {
-            playerCharacterDataJson = new PlayerCharacterDataJson();
-        }
-        else
-        {
+            string jsonData = File.ReadAllText(path);
             playerCharacterDataJson = JsonUtility.FromJson<PlayerCharacterDataJson>(jsonData);
+
+            return playerCharacterDataJson;
         }
 
-        return playerCharacterDataJson;
+        return null;
     }
 
     public void SaveToJson(SkillDataJson skillDataJson)

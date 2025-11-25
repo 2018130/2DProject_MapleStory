@@ -133,6 +133,8 @@ public class StatusData
             this.moveSpeed = 1f;
             this.jumpForce = 4.5f;
             expAmount = 10;
+            this.maxHP = 100;
+            this.maxMP = 50;
         }
         else
         {

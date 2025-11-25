@@ -43,7 +43,10 @@ public class CharacterSelectManager : MonoBehaviour, ISceneContextBuilt
     {
         PlayerCharacterDataJson playerCharacterDataJson = PersistentDataManager.Instance.LoadFromJson();
 
-        playerCharacterDatas = playerCharacterDataJson.data;
+        if(playerCharacterDataJson != null)
+        {
+            playerCharacterDatas = playerCharacterDataJson.data;
+        }
     }
 
     /// <summary>

@@ -6,6 +6,11 @@ using UnityEngine;
 public class PlayerCharacter : Character, ISceneContextBuilt
 {
     [SerializeField]
+    protected CharacterUIText characterNameImagePrefab;
+    protected CharacterUIText characterNameImage;
+
+
+    [SerializeField]
     protected PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
@@ -34,17 +39,24 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
     public void OnSceneContextBuilt()
     {
-        playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
-        StatusController.Instance.AddStatusData(playerCharacterData.statusData);
-
         if (this is not TitleCharacter)
         {
+            playerCharacterData = GameManager.Instance.CurrentSceneContext.PlayerCharacterData;
+            StatusController.Instance.AddStatusData(playerCharacterData.statusData);
+
             combat.Initialize(playerCharacterData.statusData.MaxHP, playerCharacterData.statusData.MaxMP);
             downArrowJump = true;
             stateMuchine.ChangeState(new JumpState());
+
+            AddExp(0);
         }
 
-        AddExp(0);
+        if (characterNameImage == null)
+        {
+            characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.Canvas.transform);
+        }
+
+        characterNameImage.SetTextUIToWorldObj(transform.position + Vector3.down * 0.3f, playerCharacterData.CharacterName);
     }
 
     protected override void Update()
@@ -121,10 +133,17 @@ public class PlayerCharacter : Character, ISceneContextBuilt
 
         CheckGround();
         SetAnimation("Speed", moveDir.magnitude);
+        characterNameImage.SetTextUIToWorldObj(transform.position - Vector3.down * -0.3f, playerCharacterData.CharacterName);
     }
 
 
 
+
+    public void OnDestroy()
+    {
+        if (characterNameImage != null)
+            Destroy(characterNameImage.gameObject);
+    }
     protected override void CheckGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(groundCheckOffset.position, Vector2.down, groundCheckRayDistance, blockLayerMask);

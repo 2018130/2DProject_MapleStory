@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Bootstrapper
+public static class Bootstrapper
 {
     [RuntimeInitializeOnLoadMethod]
-    public static void GameInitializer()
+    static void GameInitializer()
     {
         Scene currentScene = SceneManager.GetActiveScene();
 

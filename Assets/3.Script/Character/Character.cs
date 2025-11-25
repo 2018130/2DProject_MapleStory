@@ -236,10 +236,17 @@ public class Character : MonoBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
     protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawLine(groundCheckOffset.position, groundCheckOffset.position + Vector3.down * groundCheckRayDistance);
+        if(this is not TitleCharacter)
+        {
+            Gizmos.DrawLine(groundCheckOffset.position, groundCheckOffset.position + Vector3.down * groundCheckRayDistance);
+
+        }
     }
+#endif
 }

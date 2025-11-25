@@ -202,9 +202,32 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheckRayDistance: 0.1
+  forwardGroundCheckRayDistance: 0.3
   groundCheckOffset: {fileID: 1058250631155510046}
+  forwardGroundCheckOffset: {fileID: 0}
   isGrounded: 0
   combat: {fileID: 0}
+  isInvincible: 0
+  isStuned: 0
+  characterNameImagePrefab: {fileID: 6140309560281267822, guid: 86ffa12fefea1fc4396b2701b49be998, type: 3}
+  playerCharacterData:
+    key: 
+    CharacterName: 
+    EXP: 0
+    RemainSkillLV: 0
+    statusData:
+      key: 
+      moveSpeed: 0
+      jumpForce: 0
+      expAmount: 0
+      expRate: 0
+      atk: 0
+      maxHP: 0
+      maxMP: 0
+      str: 0
+      dex: 0
+      integer: 0
+      luk: 0
   downArrowJump: 0
   maxJumpCount: 1
   jumpCount: 0

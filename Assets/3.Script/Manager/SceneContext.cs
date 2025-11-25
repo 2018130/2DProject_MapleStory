@@ -20,6 +20,9 @@ public class SceneContext : MonoBehaviour
     private GameUIManager mainUIManager;
     public GameUIManager MainUIManager => mainUIManager;
 
+    [SerializeField]
+    public Canvas Canvas;
+
     public void Initialize(PlayerCharacterData data = null)
     {
         if(data != null)
@@ -29,5 +32,6 @@ public class SceneContext : MonoBehaviour
 
         playerCharacter = FindAnyObjectByType<PlayerCharacter>();
         mainUIManager = FindAnyObjectByType<GameUIManager>();
+        Canvas = FindAnyObjectByType<Canvas>();
     }
 }

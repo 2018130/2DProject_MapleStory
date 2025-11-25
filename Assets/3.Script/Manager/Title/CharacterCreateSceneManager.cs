@@ -19,15 +19,14 @@ public class CharacterCreateSceneManager : MonoBehaviour
     public void BackToSelectCharacterScene(bool isCreatedCharacter)
     {
         string name = signBoard.GetNameFieldText();
-        if(name.Length == 0 || PersistentDataManager.Instance.LoadFromJson().data.Count >= Constants.MaxPlayerCreateCount)
+        if (name.Length == 0)
             return;
-
 
         if (!isCreatedCharacter)
         {
             SceneChangeManager.Instance.ChangeScene(SceneType.CharacterSelectScene);
         }
-        else
+        else if(1 < Constants.MaxPlayerCreateCount)
         {
             PlayerCharacterData playerCharacterData = new PlayerCharacterData(name, statusData);
             SceneChangeManager.Instance.ChangeScene(SceneType.CharacterSelectScene, playerCharacterData);

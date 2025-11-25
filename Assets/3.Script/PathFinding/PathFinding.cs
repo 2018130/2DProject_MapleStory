@@ -64,23 +64,20 @@ public class PathFinding : MonoBehaviour, ISceneContextBuilt
         {
             yield return null;
 
-            Debug.Log("0000");
             if (pc.IsAuto)
             {
                 if(huntingCoroutine == null)
                 {
                     bool isDead = origin.gameObject.activeSelf;
-                    Debug.Log(origin.gameObject.name + " " + origin.gameObject.activeSelf);
+
                     if (isDead)
                     {
-                        Debug.Log("1111");
                         huntingCoroutine = StartCoroutine(Hunting_co());
                     }
                 }
             }
             else if(!pc.IsAuto && huntingCoroutine != null)
             {
-                Debug.Log("3333");
                 StopCoroutine(huntingCoroutine);
             }
         }

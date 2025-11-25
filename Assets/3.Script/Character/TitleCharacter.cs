@@ -4,10 +4,6 @@ using UnityEngine.UI;
 
 public class TitleCharacter : PlayerCharacter
 {
-    [SerializeField]
-    private CharacterUIText characterNameImagePrefab;
-    private CharacterUIText characterNameImage;
-
     public Action<string> ChosenTitleCharacter;
 
     private SpriteOutline spriteOutline;
@@ -31,10 +27,10 @@ public class TitleCharacter : PlayerCharacter
 
         if (characterNameImage == null)
         {
-            characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.MainUIManager.transform);
+            characterNameImage = Instantiate(characterNameImagePrefab, GameManager.Instance.CurrentSceneContext.Canvas.transform);
         }
 
-        characterNameImage.SetTextUIToWorldObj(transform.position, base.playerCharacterData.CharacterName);
+        characterNameImage.SetTextUIToWorldObj(transform.position, playerCharacterData.CharacterName);
     }
 
     private void ChooseCharacter()
@@ -53,12 +49,6 @@ public class TitleCharacter : PlayerCharacter
         {
             spriteOutline.outlineSize = 0;
         }
-    }
-
-    public void OnDestroy()
-    {
-        if(characterNameImage != null)
-        Destroy(characterNameImage.gameObject);
     }
 
     private void OnMouseUp()

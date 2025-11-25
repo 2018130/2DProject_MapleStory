@@ -6997,6 +6997,7 @@ MonoBehaviour:
       dex: 1
       integer: 1
       luk: 1
+  Canvas: {fileID: 0}
 --- !u!4 &1308612180
 Transform:
   m_ObjectHideFlags: 0
@@ -7574,6 +7575,7 @@ GameObject:
   - component: {fileID: 1485800227}
   - component: {fileID: 1485800226}
   - component: {fileID: 1485800225}
+  - component: {fileID: 1485800228}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7655,6 +7657,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1485800228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485800224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf7e93f8b5b074d488bd5230395636c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  offset: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &1492993710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11646,11 +11661,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5331340723941209447, guid: d86bdaf20c074a74d90f5d5173496fc2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 10.99
       objectReference: {fileID: 0}
     - target: {fileID: 5331340723941209447, guid: d86bdaf20c074a74d90f5d5173496fc2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4
+      value: -3.8
       objectReference: {fileID: 0}
     - target: {fileID: 5331340723941209447, guid: d86bdaf20c074a74d90f5d5173496fc2, type: 3}
       propertyPath: m_LocalPosition.z
