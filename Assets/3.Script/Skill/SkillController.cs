@@ -63,25 +63,28 @@ public class SkillController : MonoBehaviour, ISceneContextBuilt
 
     private void LoadSkillJsonData()
     {
-        Debug.Log(PersistentDataManager.Instance);
         SkillDataJson sdj = PersistentDataManager.Instance.LoadSkillDataFromJson();
-        sdj.activeSkillList.ForEach(x =>
-        {
-            ActiveSkill ac = ActiveSkillList.Find(y => y.SkillName == x.SkillName);
-            if (ac != null)
-            {
-                ac.Copy(x);
-            }
-        });
-        sdj.passiveSkillList.ForEach(x =>
-        {
-            PassiveSkill ps = passiveSkillList.Find(y => y.SkillName == x.SkillName);
-            if (ps != null)
-            {
-                ps.Copy(x);
 
-            }
-        });
+        if(sdj != null)
+        {
+            sdj.activeSkillList.ForEach(x =>
+            {
+                ActiveSkill ac = ActiveSkillList.Find(y => y.SkillName == x.SkillName);
+                if (ac != null)
+                {
+                    ac.Copy(x);
+                }
+            });
+            sdj.passiveSkillList.ForEach(x =>
+            {
+                PassiveSkill ps = passiveSkillList.Find(y => y.SkillName == x.SkillName);
+                if (ps != null)
+                {
+                    ps.Copy(x);
+
+                }
+            });
+        }
     }
     private void SaveSkillJsonData()
     {
@@ -90,5 +93,10 @@ public class SkillController : MonoBehaviour, ISceneContextBuilt
         passiveSkillList.ForEach(x => skillDataJson.passiveSkillList.Add(x.BaseSkillData));
 
         PersistentDataManager.Instance.SaveToJson(skillDataJson);
+    }
+
+    public void UseDefaultSkill()
+    {
+        GetActiveSkill("¿¡·Î¿ì ¼¦").StartSkill();
     }
 }

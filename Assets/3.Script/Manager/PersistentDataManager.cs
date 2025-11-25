@@ -66,17 +66,14 @@ public class PersistentDataManager : SingletonBehaviour<PersistentDataManager>
     }
     public SkillDataJson LoadSkillDataFromJson()
     {
-        string jsonData = File.ReadAllText(Path.Combine(dataPath, skillDataFileName));
+        string path = Path.Combine(dataPath, skillDataFileName);
 
-        if (jsonData.Length == 0)
+        if(File.Exists(path))
         {
-            skillDataJson = new SkillDataJson();
-        }
-        else
-        {
-            skillDataJson = JsonUtility.FromJson<SkillDataJson>(jsonData);
+            string jsonData = File.ReadAllText(path);
+            return skillDataJson = JsonUtility.FromJson<SkillDataJson>(jsonData);
         }
 
-        return skillDataJson;
+        return null;
     }
 }

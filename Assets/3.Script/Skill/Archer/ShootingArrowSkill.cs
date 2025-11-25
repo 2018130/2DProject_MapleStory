@@ -13,7 +13,7 @@ public class ShootingArrowSkill : ActiveSkill
 
     public override void StartSkill()
     {
-        Debug.Log(DateTime.Now.Subtract(preSkillPlayedTime) + " " + TimeSpan.FromSeconds(1 / ActiveSkillData.AtkRate));
+        //Debug.Log(DateTime.Now.Subtract(preSkillPlayedTime) + " " + TimeSpan.FromSeconds(1 / ActiveSkillData.AtkRate));
         if (baseSkillData.LV == 0 ||
             DateTime.Now.Subtract(preSkillPlayedTime) < TimeSpan.FromSeconds(1 / ActiveSkillData.AtkRate))
             return;

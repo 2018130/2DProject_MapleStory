@@ -153,7 +153,8 @@ public class Character : MonoBehaviour
     }
     public virtual void Dead()
     {
-        StopCoroutine(invincibilityCountDown_co);
+        if(invincibilityCountDown_co != null)
+            StopCoroutine(invincibilityCountDown_co);
         gameObject.SetActive(false);
     }
 

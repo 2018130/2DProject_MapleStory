@@ -9,13 +9,14 @@ public class PlayerCharacter : Character, ISceneContextBuilt
     protected PlayerCharacterData playerCharacterData;
     public PlayerCharacterData PlayerCharacterData => playerCharacterData;
 
-    public bool isAuto = false;
+    private bool isAuto = false;
+    public bool IsAuto => isAuto;
     public int Priority { get; set; } = 1;
 
 
     [Header("Physics")]
     [SerializeField]
-    private bool downArrowJump = false;
+    public bool downArrowJump = false;
     [SerializeField]
     protected int maxJumpCount = 1;
     [SerializeField]
@@ -138,10 +139,12 @@ public class PlayerCharacter : Character, ISceneContextBuilt
                 firstTouchDir = targetToGround > 0.2f ? 1 : -1;
             }
 
+            //Debug.Log($"{downArrowJump} {firstTouchDir} {moveDir.y} {stateMuchine.CurrentState.GetType()}");
             if (hit.collider.CompareTag("OutOfMap") || (!downArrowJump && firstTouchDir == 1))
             {
                 // 착지 후 판단
-                if (moveDir.y < 0.5f && stateMuchine.CurrentState.GetType() == new JumpState().GetType())
+                if (moveDir.y < 0.5f &&
+                    (stateMuchine.CurrentState.GetType() == new JumpState().GetType() || stateMuchine.CurrentState.GetType() == new HangState().GetType()))
                 {
                     StateMuchine.ChangeState(new IdleState());
                 }
@@ -234,4 +237,14 @@ public class PlayerCharacter : Character, ISceneContextBuilt
         OnChangedLV?.Invoke(lv);
     }
 
+    public void AttackDefaultSkill()
+    {
+        SkillController sc = GetComponentInChildren<SkillController>();
+        sc.UseDefaultSkill();
+    }
+
+    public void ToggleAutoMode()
+    {
+        isAuto = !isAuto;
+    }
 }

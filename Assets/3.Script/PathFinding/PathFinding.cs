@@ -26,7 +26,7 @@ public class Node : IComparable<Node>
     }
 }
 
-public class PathFinding : MonoBehaviour
+public class PathFinding : MonoBehaviour, ISceneContextBuilt
 {
     [SerializeField]
     private Transform leftDown, rightUp;
@@ -40,29 +40,52 @@ public class PathFinding : MonoBehaviour
     [Header("Setting")]
     [SerializeField]
     private LayerMask canMovingLayer;
-    [SerializeField]
-    private float detectingRadius;
 
     private Vector3 destinationVector;
     private int row;
-    private int cal;
     private List<Node> nodes = new List<Node>();
     private Node endNode;
 
-    private void Start()
+    Coroutine huntingCoroutine = null;
+
+    public int Priority { get; set; } = 1;
+
+    public void OnSceneContextBuilt()
     {
-        cal = (int)rightUp.position.y - (int)leftDown.position.y + 1;
         row = (int)rightUp.position.x - (int)leftDown.position.x + 1;
 
+        StartCoroutine(AutoHunting_co());
     }
 
-    private void Update()
+    public IEnumerator AutoHunting_co()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        PlayerCharacter pc = GameManager.Instance.CurrentSceneContext.PlayerCharacter;
+        while(true)
         {
-            StartCoroutine(AStar());
+            yield return null;
+
+            if(pc.IsAuto && huntingCoroutine == null)
+            {
+                if(origin.TryGetComponent(out Character character))
+                {
+                    if(character.StateMuchine.CurrentState.GetType() != new DeadState().GetType())
+                    {
+                        yield return huntingCoroutine = StartCoroutine(Hunting_co());
+                    }
+                    else
+                    {
+                        origin = GameObject.FindAnyObjectByType<BaseMonster>().transform;
+                        yield return huntingCoroutine = StartCoroutine(Hunting_co());
+                    }
+                }
+            }
+            else if(!pc.IsAuto && huntingCoroutine != null)
+            {
+                StopCoroutine(huntingCoroutine);
+            }
         }
     }
+
     private void Detectnodes()
     {
         Color[] colors = new Color[3] { Color.red, Color.blue, Color.yellow };
@@ -87,8 +110,7 @@ public class PathFinding : MonoBehaviour
                         RaycastHit2D hit;
                         hit = Physics2D.Raycast(v.point, Vector2.down, 5f, 1 << LayerMask.NameToLayer("Foothold"));
                         hangDownArrowPos = hit.point;
-                        SpriteRenderer sp = Instantiate(tilePrefab, hit.point, Quaternion.identity).GetComponent<SpriteRenderer>();
-                        sp.color = Color.yellow;
+                        //sp.color = Color.yellow;
                         break;
                     }
                 }
@@ -99,9 +121,12 @@ public class PathFinding : MonoBehaviour
     }
 
 
-    private IEnumerator AStar()
+    private IEnumerator Hunting_co()
     {
+        endNode = null;
+        nodes.Clear();
         Detectnodes();
+
         destinationVector = destination.position;
         destinationVector.x = (int)destinationVector.x;
         destinationVector.y = (int)destinationVector.y;
@@ -121,8 +146,8 @@ public class PathFinding : MonoBehaviour
                 endNode = curNode;
                 break;
             }
-            //SpriteRenderer sp = Instantiate(tilePrefab, curNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
-            //sp.color = Color.red;
+            SpriteRenderer sp = Instantiate(tilePrefab, curNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
+            sp.color = Color.red;
             //yield return new WaitForSeconds(0.3f);
 
             for (int i = 0; i < 4; i++)
@@ -133,16 +158,19 @@ public class PathFinding : MonoBehaviour
                 Node checkNode = GetNode(newPosX, newPosY);
                 if (checkNode != null && !checkNode.closed && checkNode.canMove)
                 {
-                    int g = curNode.g + 10;
-                    int h = ((int)Mathf.Abs(destinationVector.x - newPosX) + (int)Mathf.Abs(destinationVector.y - newPosY)) * 10;
+
+                    int weight = 10;
+
+                    int g = curNode.g + weight;
+                    int h = ((int)Mathf.Abs(destinationVector.x - newPosX) + (int)Mathf.Abs(destinationVector.y - newPosY)) * weight;
                     int f = g + h;
                     checkNode.g = g;
                     checkNode.h = h;
                     checkNode.f = -f;
                     checkNode.preNode = curNode;
                     queue.Enqueue(checkNode);
-                    //SpriteRenderer sp1 = Instantiate(tilePrefab, checkNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
-                    //sp1.color = Color.yellow;
+                    SpriteRenderer sp1 = Instantiate(tilePrefab, checkNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
+                    sp1.color = Color.yellow;
                 }
             }
             //yield return new WaitForSeconds(0.3f);
@@ -156,42 +184,77 @@ public class PathFinding : MonoBehaviour
             curNode1 = curNode1.preNode;
         }
 
-        PlayerCharacter pc = GameManager.Instance.CurrentSceneContext.PlayerCharacter;
-        pc.isAuto = true;
         road.Reverse();
 
-        Vector3 prePos = road[0].position;
-        for (int i = 1; i < road.Count; i++)
+        yield return ChaseAndAttack_co(road);
+
+        huntingCoroutine = null;
+    }
+
+    private IEnumerator ChaseAndAttack_co(List<Node> road)
+    {
+        if (road.Count <= 0)
+            yield break;
+
+        PlayerCharacter pc = GameManager.Instance.CurrentSceneContext.PlayerCharacter;
+        for (int i = 1; i < road.Count;)
         {
-            Vector3 curPos = road[i].position;
-            int dirX = (int)curPos.x - (int)prePos.x;
+            int dirX = (int)road[i].position.x - (int)road[i - 1].position.x;
 
-            if (prePos.y == curPos.y)
+            if (road[i - 1].position.y == road[i].position.y)
             {
-
                 pc.SetMoveDir(new Vector3(dirX, 0));
                 pc.StateMuchine.ChangeState(new WalkState());
+
+                yield return new WaitUntil(() => IsNearby(origin.position, road[i].position, 0.1f, false, true));
+                i++;
             }
             else
             {
-                int dirY = (int)curPos.y - (int)prePos.y;
-                if(road[i].hangDownArrowPos != Vector3.zero)
-                {
-                    pc.transform.position = road[i].hangDownArrowPos;
-                }
+                if (i >= road.Count - 2)
+                    break;
+
+                int dirY = (int)road[i].position.y - (int)road[i - 1].position.y;
                 pc.StateMuchine.ChangeState(new JumpState());
 
                 yield return new WaitForSeconds(0.3f);
 
-                pc.SetMoveDir(new Vector3(0, dirY));
-                pc.StateMuchine.ChangeState(new HangState());
+                Transform hangTransform = pc.CanHanging();
 
+                if(hangTransform != null)
+                {
+                    pc.transform.position = new Vector3(hangTransform.position.x, pc.transform.position.y);
+                    pc.StateMuchine.ChangeState(new HangState());
+                }
+                pc.SetMoveDir(new Vector3(0, dirY));
+
+                bool flag = false;
+                yield return new WaitWhile(() =>
+                {
+                    if (IsNearby(pc.transform.position, road[i].position, 0.2f))
+                    {
+                        //Debug.Log($"prePos : {road[i - 1].position}  curPos : {road[i].position} dir : {pc.MoveDir} state : {pc.StateMuchine.CurrentState.GetType()}");
+                        flag = true;
+                        i++;
+                    }
+                    return pc.CanHanging() != null;
+                });
+
+                pc.downArrowJump = true;
+                pc.StateMuchine.ChangeState(new JumpState());
+
+                if (!flag)
+                    i++;
+                yield return new WaitUntil(() => pc.StateMuchine.CurrentState.GetType() == new IdleState().GetType());
             }
-            Debug.Log($"prePos : {prePos}  curPos : {curPos} dir : {pc.MoveDir} state : {pc.StateMuchine.CurrentState.GetType()}");
-            yield return new WaitUntil(() => IsNearby(origin.position, curPos));
-            yield return new WaitForSeconds(0.3f);
+
+            //Debug.Log($"prePos : {road[i - 1].position}  curPos : {road[i].position} dir : {pc.MoveDir} state : {pc.StateMuchine.CurrentState.GetType()}");
         }
-        pc.isAuto = false;
+
+        pc.SetMoveDir(Vector3.zero);
+        pc.StateMuchine.ChangeState(new IdleState());
+
+        pc.AttackDefaultSkill();
     }
 
     private Node GetNode(int x, int y)
@@ -203,15 +266,13 @@ public class PathFinding : MonoBehaviour
         else
             return null;
     }
-    private bool IsNearby(Vector3 pos, Vector3 destination)
+    private bool IsNearby(Vector3 pos, Vector3 destination, float distance = 1f, bool ignoreX = false, bool ignoreY = false)
     {
-        for(int i = 0; i < 9; i++)
-        {
-            if (pos.x >= destination.x - 1 && pos.x <= destination.x + 1 &&
-                pos.y >= destination.y - 1 && pos.y <= destination.y + 1)
-                return true;
-        }
+        if ((ignoreX || (!ignoreX && pos.x >= destination.x - distance && pos.x <= destination.x + distance)) &&
+            (ignoreY || (!ignoreY && pos.y >= destination.y - distance && pos.y <= destination.y + distance)))
+            return true;
 
         return false;
     }
+
 }
