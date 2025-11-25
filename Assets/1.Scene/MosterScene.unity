@@ -6417,7 +6417,7 @@ GameObject:
   - component: {fileID: 1178951935}
   - component: {fileID: 1178951934}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: AutoHunting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6990,9 +6990,9 @@ MonoBehaviour:
       jumpForce: 4.5
       expAmount: 0
       expRate: 0
-      atk: 1
-      maxHP: 100
-      maxMP: 100
+      atk: 10
+      maxHP: 200
+      maxMP: 200
       str: 1
       dex: 1
       integer: 1

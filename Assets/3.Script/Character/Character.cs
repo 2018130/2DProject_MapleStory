@@ -149,6 +149,7 @@ public class Character : MonoBehaviour
 
     public virtual void Die()
     {
+        Debug.Log(gameObject.name + " die");
         stateMuchine.ChangeState(new DeadState());
     }
     public virtual void Dead()

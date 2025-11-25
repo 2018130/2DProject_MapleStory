@@ -64,23 +64,23 @@ public class PathFinding : MonoBehaviour, ISceneContextBuilt
         {
             yield return null;
 
-            if(pc.IsAuto && huntingCoroutine == null)
+            Debug.Log("0000");
+            if (pc.IsAuto)
             {
-                if(origin.TryGetComponent(out Character character))
+                if(huntingCoroutine == null)
                 {
-                    if(character.StateMuchine.CurrentState.GetType() != new DeadState().GetType())
+                    bool isDead = origin.gameObject.activeSelf;
+                    Debug.Log(origin.gameObject.name + " " + origin.gameObject.activeSelf);
+                    if (isDead)
                     {
-                        yield return huntingCoroutine = StartCoroutine(Hunting_co());
-                    }
-                    else
-                    {
-                        origin = GameObject.FindAnyObjectByType<BaseMonster>().transform;
-                        yield return huntingCoroutine = StartCoroutine(Hunting_co());
+                        Debug.Log("1111");
+                        huntingCoroutine = StartCoroutine(Hunting_co());
                     }
                 }
             }
             else if(!pc.IsAuto && huntingCoroutine != null)
             {
+                Debug.Log("3333");
                 StopCoroutine(huntingCoroutine);
             }
         }
@@ -146,8 +146,8 @@ public class PathFinding : MonoBehaviour, ISceneContextBuilt
                 endNode = curNode;
                 break;
             }
-            SpriteRenderer sp = Instantiate(tilePrefab, curNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
-            sp.color = Color.red;
+            //SpriteRenderer sp = Instantiate(tilePrefab, curNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
+            //sp.color = Color.red;
             //yield return new WaitForSeconds(0.3f);
 
             for (int i = 0; i < 4; i++)
@@ -169,8 +169,8 @@ public class PathFinding : MonoBehaviour, ISceneContextBuilt
                     checkNode.f = -f;
                     checkNode.preNode = curNode;
                     queue.Enqueue(checkNode);
-                    SpriteRenderer sp1 = Instantiate(tilePrefab, checkNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
-                    sp1.color = Color.yellow;
+                    //SpriteRenderer sp1 = Instantiate(tilePrefab, checkNode.position, Quaternion.identity).GetComponent<SpriteRenderer>();
+                    //sp1.color = Color.yellow;
                 }
             }
             //yield return new WaitForSeconds(0.3f);

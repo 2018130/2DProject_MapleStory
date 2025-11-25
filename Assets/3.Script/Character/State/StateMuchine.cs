@@ -7,6 +7,7 @@ public class StateMuchine :MonoBehaviour
 {
     private Character character;
 
+    [SerializeField]
     private BaseState currnetState = new IdleState();
     public BaseState CurrentState => currnetState;
 
