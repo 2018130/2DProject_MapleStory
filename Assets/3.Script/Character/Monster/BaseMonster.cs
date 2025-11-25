@@ -109,6 +109,7 @@ public class BaseMonster : Character, ISceneContextBuilt
             isGroundedForward = false;
         }
     }
+#if UNITY_EDITOR
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
@@ -116,4 +117,5 @@ public class BaseMonster : Character, ISceneContextBuilt
         Vector3 direction = new Vector3(GetFrontDirX() / Mathf.Abs(GetFrontDirX()), -1f).normalized;
         Gizmos.DrawLine(forwardGroundCheckOffset.position, forwardGroundCheckOffset.position + direction * forwardGroundCheckRayDistance);
     }
+#endif
 }

@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 
 public enum SceneType
 {
-    None,
     TitleScene,
     CharacterSelectScene,
     CharacterCreateScene,
     GameScene,
+    None,
     ResultScene
 }
 
